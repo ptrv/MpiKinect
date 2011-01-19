@@ -27,7 +27,7 @@ public class ProcessingKinectDraw extends PApplet {
 	int w = 640;
 	int h = 480;
 	
-
+	//test
 	PGraphics gDebug;
 	PGraphics gPath;
 	
