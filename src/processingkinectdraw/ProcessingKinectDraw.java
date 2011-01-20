@@ -47,6 +47,8 @@ public class ProcessingKinectDraw extends PApplet {
 	int areaSizeX = 40;
 	int areaSizeY = 40;
 	
+	Button testButton;
+	
 	public void setup() {
 		size(640,520);
  
@@ -54,7 +56,7 @@ public class ProcessingKinectDraw extends PApplet {
 	  kinect.start();
 	  kinect.enableDepth(enableDepth);
 	  kinect.enableRGB(enableRGB);
-	  kinect.enableIR(false);
+	  //kinect.enableIR(false);
 	  kinect.tilt(tiltDegrees);
 	  kinect.processDepthImage(false);
 	  
@@ -76,8 +78,14 @@ public class ProcessingKinectDraw extends PApplet {
 	  
 	  template = new HeartTemplate(this);
 	  
-	  //stroke(255,0,0);
-	  //fill(255,0,0);
+	  //test button
+	  testButton = new Button(
+			  loadImage("./res/button_graffiti_red_1.png"),
+			  loadImage("./res/button_graffiti_red_2.png"),
+			  200, 200, 
+			  Button.LOADING_BOTTOM_TO_TOP,
+			  this);
+	  
 	  
 	}
 
@@ -228,7 +236,25 @@ public class ProcessingKinectDraw extends PApplet {
 			  erasePath();
 			  template.reset();
 		  }
+		  
+		  
+		  
+		  
+		  //process test button
+		  if(testButton.isPointOnButton(p)) {
+			  //ok, button is hovered, update overlay animation
+			  if(testButton.hover(millis())) {
+				  System.out.println("Button is clicked!!! Execute Button onclick action");
+			  }
+		  }
+		  else
+			  testButton.release();
+		  
+		  testButton.draw();
+		  
+		  
 
+		  
 		  image(gDebug, 0, 0); 
 		  image(gPath, 0, 0);
 		  
