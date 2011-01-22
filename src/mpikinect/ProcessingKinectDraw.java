@@ -1,4 +1,4 @@
-package processingkinectdraw;
+package mpikinect;
 
 import java.awt.Color;
 import java.awt.Point;
@@ -344,6 +344,6 @@ public class ProcessingKinectDraw extends PApplet {
 		
 	
 	public static void main(String _args[]) {
-		PApplet.main(new String[] { processingkinectdraw.ProcessingKinectDraw.class.getName() });
+		PApplet.main(new String[] { mpikinect.ProcessingKinectDraw.class.getName() });
 	}
 }

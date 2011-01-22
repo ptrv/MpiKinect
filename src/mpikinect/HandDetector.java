@@ -1,4 +1,4 @@
-package processingkinectdraw;
+package mpikinect;
 
 import java.awt.Point;
 
