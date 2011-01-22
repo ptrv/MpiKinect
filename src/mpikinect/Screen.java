@@ -6,12 +6,10 @@ import processing.core.PApplet;
 import processing.core.PImage;
 
 public abstract class Screen {
-	PApplet parent;
+	protected PApplet parent;
+	protected PImage background;
 	
-	PImage background;
-	
-	
-	Screen(PApplet p){
+	public Screen(PApplet p){
 		parent = p;
 	}
 	

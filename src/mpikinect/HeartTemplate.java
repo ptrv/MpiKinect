@@ -5,16 +5,15 @@ import java.awt.Point;
 import processing.core.PApplet;
 import processing.core.PImage;
 
-public class HeartTemplate {
-	private PApplet pApplet;
-	private int stage;
-	private int numStages;
-	private Point[] startPoints;
-	private Point[] stopPoints;
-	private PImage[] stageImages;
+public class HeartTemplate extends DrawTemplate{
 	
-	public HeartTemplate(PApplet pApplet) {
-		this.pApplet = pApplet;
+	public HeartTemplate(PApplet p) {
+		super(p);
+		initTemplate();
+	}
+
+	@Override
+	public void initTemplate() {
 		stage = 0;
 		numStages = 3;
 		
@@ -32,31 +31,5 @@ public class HeartTemplate {
 		stopPoints[0] = new Point(318,315);
 		stopPoints[1] = new Point(221,151);
 		stopPoints[2] = new Point(413,145);
-		
-	}
-	
-	public boolean nextStage() {
-		stage++;
-		if(stage >= numStages) {
-			return false;
-		}
-		return true;
-	}
-	
-	public Point getCurrentStartPoint() {
-		return startPoints[stage];
-	}
-	public Point getCurrentStopPoint() {
-		return stopPoints[stage];
-	}
-	public PImage getCurrentStageImage() {
-		return stageImages[stage];
-	}
-	
-	public void reset() {
-		stage = 0;
-	}
-	public boolean isFinished() {
-		return stage >= numStages;
 	}
 }
