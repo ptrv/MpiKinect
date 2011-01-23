@@ -7,21 +7,19 @@ import processing.core.PImage;
 
 public class ColorChooserScreen extends Screen {
 
-	PImage graffitiRed, graffitiGreen, graffitiBlue;
+	Button graffitiRed, graffitiGreen, graffitiBlue;
 	
-	public ColorChooserScreen(PApplet p) {
+	public ColorChooserScreen(AppMain p) {
 		super(p);
-		this.background = parent.loadImage("testBackgroundColor.png");
+		this.background = pApplet.loadImage("testBackgroundColor.png");
 		
-		graffitiRed = parent.loadImage("graffiti_green.png");
-		graffitiGreen = parent.loadImage("graffiti_blue.png");
-		graffitiBlue = parent.loadImage("graffiti_red.png");
+
 
 	}
 
 	@Override
 	void draw(Point p) {
-		// TODO Auto-generated method stub
+		pApplet.image(background, 0,0);
 
 	}
 
