@@ -29,7 +29,7 @@ public class AppMain extends PApplet {
 	
 	public enum Screens
 	{
-		HOME, TEMPLATE_CHOOSER, DRAWING 
+		HOME, TEMPLATE_CHOOSER, DRAWING, HELP 
 	}
 
 
@@ -46,6 +46,7 @@ public class AppMain extends PApplet {
 	private HomeScreen homeScreen;
 	private TemplateChooserScreen templateChooser;
 	private DrawingScreen drawingScreen;
+	private HelpScreen helpScreen;
 	private Screens currentScreen = Screens.HOME;
 	
 	
@@ -73,6 +74,7 @@ public class AppMain extends PApplet {
 		homeScreen = new HomeScreen(this);
 		templateChooser = new TemplateChooserScreen(this);
 		drawingScreen = new DrawingScreen(this);
+		helpScreen = new HelpScreen(this);
 	}
 
 	public void draw() {
@@ -114,7 +116,10 @@ public class AppMain extends PApplet {
 		case HOME:
 			homeScreen.draw(p);
 			break;
-
+		
+		case HELP:
+			helpScreen.draw(p);
+			break;
 		case TEMPLATE_CHOOSER:
 			templateChooser.draw(p);
 			break;
@@ -183,6 +188,12 @@ public class AppMain extends PApplet {
 		return currentScreen;
 	}
 	
+
+	
+	public void setHelpInfo(int helpIndex){
+		helpScreen.setHelpInfo(helpIndex);
+	}
+
 
 	public static void main(String _args[]) {
 		PApplet.main(new String[] { mpikinect.AppMain.class.getName() });

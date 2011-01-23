@@ -70,7 +70,12 @@ public class TemplateChooserScreen extends Screen {
             if(buttonPick.hover(pApplet.millis())) { //ok, button is hovered, update overlay animation
                 System.out.println("buttonPick is clicked!!!");
                 pApplet.setExpertMode(true);
-                pApplet.setCurrentScreen(Screens.DRAWING);
+
+                //pApplet.setCurrentScreen(Screens.DRAWING);
+
+                pApplet.setHelpInfo(1);
+                pApplet.setCurrentScreen(Screens.HELP);
+
                 buttonPick.release();
             }
         }
