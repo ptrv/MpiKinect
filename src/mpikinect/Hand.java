@@ -13,6 +13,7 @@ public class Hand {
 
 	private float ratioW,ratioH;
 	
+	
 	public Hand(Blob blob, Point nearPoint, float distance) {
 		//note: blob positions were always calculated for 640x480 
 		this.blob = blob;

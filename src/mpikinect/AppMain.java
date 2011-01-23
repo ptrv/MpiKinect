@@ -29,7 +29,7 @@ public class AppMain extends PApplet {
 	
 	public enum Screens
 	{
-		HOME, TEMPLATE_CHOOSER, COLOR_COOSER, DRAWING 
+		HOME, TEMPLATE_CHOOSER, DRAWING 
 	}
 
 
@@ -45,7 +45,6 @@ public class AppMain extends PApplet {
 
 	private HomeScreen homeScreen;
 	private TemplateChooserScreen templateChooser;
-	private ColorChooserScreen colorChooser;
 	private DrawingScreen drawingScreen;
 	private Screens currentScreen = Screens.HOME;
 	
@@ -73,7 +72,6 @@ public class AppMain extends PApplet {
 
 		homeScreen = new HomeScreen(this);
 		templateChooser = new TemplateChooserScreen(this);
-		colorChooser = new ColorChooserScreen(this);
 		drawingScreen = new DrawingScreen(this);
 	}
 
@@ -119,10 +117,6 @@ public class AppMain extends PApplet {
 
 		case TEMPLATE_CHOOSER:
 			templateChooser.draw(p);
-			break;
-
-		case COLOR_COOSER:
-			colorChooser.draw(p);
 			break;
 
 		case DRAWING:
@@ -189,10 +183,6 @@ public class AppMain extends PApplet {
 		return currentScreen;
 	}
 	
-
-	public void setDrawColor(Color color){
-		drawingScreen.setStrokeColor(color);
-	}
 
 	public static void main(String _args[]) {
 		PApplet.main(new String[] { mpikinect.AppMain.class.getName() });

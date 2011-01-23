@@ -26,6 +26,7 @@ public class Button {
 	private boolean isHovered;
 	private int loadingDirection;
 	
+	
 //	PGraphics g;
 	
 	public Button(PImage imageEmpty, PImage imageLoaded, int posX, int posY, int loadingDirection, PApplet pApplet) {
@@ -73,7 +74,7 @@ public class Button {
 		}
 		
 		return (clickProgress >= 1);
-
+		
 	}
 	
 	public void release() {
@@ -114,5 +115,6 @@ public class Button {
 	public boolean isPointOnButton(Point p) {
 		return p.x >= posX && p.x <= posX+width && p.y >= posY && p.y <= posY+height;
 	}
+	
 
 }
