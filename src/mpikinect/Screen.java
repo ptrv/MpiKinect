@@ -6,13 +6,13 @@ import processing.core.PApplet;
 import processing.core.PImage;
 
 public abstract class Screen {
-	PApplet parent;
+	AppMain pApplet;
 	
 	PImage background;
+
 	
-	
-	Screen(PApplet p){
-		parent = p;
+	Screen(AppMain p){
+		pApplet = p;
 	}
 	
 	abstract void draw(Point p);

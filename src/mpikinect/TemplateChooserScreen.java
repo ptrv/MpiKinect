@@ -13,15 +13,15 @@ public class TemplateChooserScreen extends Screen {
 	
 	private int currentTemplateIndex;
 	
-	public TemplateChooserScreen(PApplet p) {
+	public TemplateChooserScreen(AppMain p) {
 		super(p);
-		this.background = parent.loadImage("./res/testBackgroundTemplate.png");
+		this.background = pApplet.loadImage("./res/testBackgroundTemplate.png");
 		currentTemplateIndex = 0;
 	}
 
 	@Override
 	void draw(Point p) {
-		// TODO Auto-generated method stub
+		pApplet.image(background, 0,0);
 
 	}
 
