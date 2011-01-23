@@ -144,11 +144,6 @@ public class AppMain extends PApplet {
 		//text("nearest depth: " + hand.getDistance(),10,frameHeight + 35);
 	}
 
-
-
-
-
-
 	private PImage flipImage(PImage img) {
 		int w = img.width;
 		int h = img.height;
@@ -173,16 +168,11 @@ public class AppMain extends PApplet {
 
 	}
 
-
-
 	public void stop() {
 		kinect.quit();
 		super.stop();
 	}
 
-
-	
-	
 	public void setExpertMode(boolean enableExpertMode) {
 		this.expertMode = enableExpertMode;
 	}
@@ -200,7 +190,9 @@ public class AppMain extends PApplet {
 	}
 	
 
-
+	public void setDrawColor(Color color){
+		drawingScreen.setStrokeColor(color);
+	}
 
 	public static void main(String _args[]) {
 		PApplet.main(new String[] { mpikinect.AppMain.class.getName() });

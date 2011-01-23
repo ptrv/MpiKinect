@@ -9,6 +9,7 @@ import processing.core.PImage;
 public class Button {
 	public static int LOADING_BOTTOM_TO_TOP = 0;
 	public static int LOADING_LEFT_TO_RIGHT = 1;
+	public static int LOADING_RIGHT_TO_LEFT = 2;
 	
 	
 	public static int LOADING_DURATION = 2000; //in ms 
@@ -65,6 +66,10 @@ public class Button {
 		else if(loadingDirection==LOADING_LEFT_TO_RIGHT) {
 			int dx = (int)(width*clickProgress);
 			imgOverlay.copy(imgFull, 0, 0, dx, height, 0, 0, dx, height);	
+		}
+		else if(loadingDirection==LOADING_RIGHT_TO_LEFT) {
+			int dx = (int)(width*clickProgress);
+            imgOverlay.copy(imgFull, width-dx, 0, dx, height, width-dx, 0, dx, height);
 		}
 		
 		return (clickProgress >= 1);

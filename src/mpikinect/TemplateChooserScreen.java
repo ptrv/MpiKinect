@@ -2,14 +2,16 @@ package mpikinect;
 
 import java.awt.Point;
 
+import mpikinect.AppMain.Screens;
+
 import processing.core.PApplet;
 import processing.core.PImage;
 
 public class TemplateChooserScreen extends Screen {
 
-	static final int NUM_TEMPLATES = 2;
+	static final int NUM_TEMPLATES = 1;
 	
-	PImage[] templates = new PImage[NUM_TEMPLATES];
+//	PImage[] templates = new PImage[NUM_TEMPLATES];
 	
 	private int currentTemplateIndex;
 	private Button buttonPrev, buttonPick, buttonNext;
@@ -27,7 +29,7 @@ public class TemplateChooserScreen extends Screen {
 		PImage imgButton3f = pApplet.loadImage("buttons/button_2_3_full.png");
 		adjustImageSize(imgButton1e, imgButton1f, imgButton2e, imgButton2f, imgButton3e, imgButton3f);
 		
-		this.buttonPrev = new Button(imgButton1e, imgButton1f, (int)(0.07*AppMain.frameWidth), (int)(0.67*AppMain.frameHeight), Button.LOADING_LEFT_TO_RIGHT, p);
+		this.buttonPrev = new Button(imgButton1e, imgButton1f, (int)(0.07*AppMain.frameWidth), (int)(0.67*AppMain.frameHeight), Button.LOADING_RIGHT_TO_LEFT, p);
 		this.buttonPick = new Button(imgButton2e, imgButton2f, (int)(0.38*AppMain.frameWidth), (int)(0.67*AppMain.frameHeight), Button.LOADING_LEFT_TO_RIGHT, p);
 		this.buttonNext = new Button(imgButton3e, imgButton3f, (int)(0.75*AppMain.frameWidth), (int)(0.67*AppMain.frameHeight), Button.LOADING_LEFT_TO_RIGHT, p);
 
@@ -38,10 +40,54 @@ public class TemplateChooserScreen extends Screen {
 	void draw(Point p) {
 		pApplet.image(background, 0,0);
 		
-		buttonPrev.draw();
-		buttonPick.draw();
-		buttonNext.draw();
+        if(buttonPrev.isPointOnButton(p)) {
+            if(buttonPrev.hover(pApplet.millis())) { //ok, button is hovered, update overlay animation
+                System.out.println("buttonPrev is clicked!!!");
+                pApplet.setExpertMode(true);
+                currentTemplateIndex--;
+                buttonPrev.release();
+            }
+        }
+        else
+        	buttonPrev.release();
 
+        buttonPrev.draw();
+
+        if(buttonNext.isPointOnButton(p)) {
+            if(buttonNext.hover(pApplet.millis())) { //ok, button is hovered, update overlay animation
+                System.out.println("buttonNext is clicked!!!");
+                pApplet.setExpertMode(true);
+                currentTemplateIndex++;
+                buttonNext.release();
+            }
+        }
+        else
+        	buttonNext.release();
+
+        buttonNext.draw();
+
+        if(buttonPick.isPointOnButton(p)) {
+            if(buttonPick.hover(pApplet.millis())) { //ok, button is hovered, update overlay animation
+                System.out.println("buttonPick is clicked!!!");
+                pApplet.setExpertMode(true);
+                pApplet.setCurrentScreen(Screens.COLOR_COOSER);
+                buttonPick.release();
+            }
+        }
+        else
+        	buttonPick.release();
+
+        buttonPick.draw();
+        
+        showTemplateThumbnail(currentTemplateIndex);
+
+	}
+
+	private void showTemplateThumbnail(int index) {
+		if(index > NUM_TEMPLATES)
+            currentTemplateIndex = NUM_TEMPLATES-1;
+        else if(index < 0)
+            currentTemplateIndex = 0;
 	}
 
 	public void setCurrentTemplateIndex(int currentTemplateIndex) {

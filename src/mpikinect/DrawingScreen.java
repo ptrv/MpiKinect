@@ -20,12 +20,12 @@ public class DrawingScreen extends Screen {
 	boolean startPossible = true;
 	boolean stopPossible = false;
 	
-	HeartTemplate template;
+	DrawTemplate template;
 	
 	int areaSizeX = 40;
 	int areaSizeY = 40;
 	
-	Color strokeColor = Color.red;
+	private Color strokeColor = Color.red;
 
 
 	
@@ -128,7 +128,7 @@ public class DrawingScreen extends Screen {
 	private void drawCurvePoints(PGraphics g, Point[] curvePoints) {
 		g.beginDraw();
 
-		g.stroke(strokeColor.getRGB());
+		g.stroke(getStrokeColor().getRGB());
 		g.strokeWeight(5);
 		g.noFill();
 
@@ -166,6 +166,14 @@ public class DrawingScreen extends Screen {
 		gPath.beginDraw();
 		gPath.background(0,0);
 		gPath.endDraw();
+	}
+
+	public void setStrokeColor(Color strokeColor) {
+		this.strokeColor = strokeColor;
+	}
+
+	public Color getStrokeColor() {
+		return strokeColor;
 	}
 
 
