@@ -18,13 +18,21 @@ public class AppMain extends PApplet {
 	public static boolean DEBUG_MODE = true;
 	
 	
+	//dimension of application
+	public static int frameWidth = 640;
+	public static int frameHeight = 480;
+	
+	//dimension for which images/icons etc. are designed
+	public static int originalWidth = 1024;
+	public static int originalHeight = 768;
+	
+	
 	public enum Screens
 	{
 		HOME, TEMPLATE_CHOOSER, COLOR_COOSER, DRAWING 
 	}
 
-	private int w = 640;
-	private int h = 480;
+
 	private Kinect kinect;
 	private boolean enableDepth = true;
 	private boolean enableRGB = true;
@@ -46,7 +54,7 @@ public class AppMain extends PApplet {
 	
 	
 	public void setup() {
-		size(640,520);
+		size(frameWidth, frameHeight+40);
 
 		kinect = new Kinect(this);
 		kinect.start();
@@ -56,11 +64,12 @@ public class AppMain extends PApplet {
 		kinect.tilt(tiltDegrees);
 		kinect.processDepthImage(false);
 
-		handDetector = new HandDetector(w, h);
+		handDetector = new HandDetector(640, 480);
 
-		gPointer = createGraphics(w, h, JAVA2D);
+		gPointer = createGraphics(frameWidth, frameHeight, JAVA2D);
 		gPointer.stroke(255,0,0);
 		cursorImg = loadImage("cursor.png");
+		cursorImg.resize((int)(cursorImg.width*((float)frameWidth/originalWidth)), (int)(cursorImg.height*((float)frameHeight/originalHeight)));
 
 		homeScreen = new HomeScreen(this);
 		templateChooser = new TemplateChooserScreen(this);
@@ -69,7 +78,7 @@ public class AppMain extends PApplet {
 	}
 
 	public void draw() {
-		background(0);
+		
 		
 		/*
 		 * STEP1: Do hand detection
@@ -86,7 +95,7 @@ public class AppMain extends PApplet {
 		//draw hand
 		gPointer.beginDraw();
 		gPointer.background(0,0);
-		gPointer.image(cursorImg, p.x-36, p.y-44);
+		gPointer.image(cursorImg, p.x-0.44f*cursorImg.width, p.y-0.54f*cursorImg.height);
 		if(DEBUG_MODE) {
 			gPointer.noFill();
 			gPointer.stroke(0, 0, 255);
@@ -100,6 +109,8 @@ public class AppMain extends PApplet {
 		/*
 		 * STEP2: Process current screen
 		 */
+		background(0);
+		
 		switch (currentScreen) {
 		
 		case HOME:
@@ -129,8 +140,8 @@ public class AppMain extends PApplet {
 
 		
 		
-		fill(255);
-		text("nearest depth: " + hand.getDistance(),10,515);
+		//fill(255);
+		//text("nearest depth: " + hand.getDistance(),10,frameHeight + 35);
 	}
 
 

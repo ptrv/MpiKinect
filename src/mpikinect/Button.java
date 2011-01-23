@@ -39,6 +39,7 @@ public class Button {
 		this.pApplet = pApplet;
 		this.loadingDirection = loadingDirection;
 		
+		
 //		  g = pApplet.createGraphics(width, height, PApplet.JAVA2D);
 //		  g.background(0,0);
 	}
