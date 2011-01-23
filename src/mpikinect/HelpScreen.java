@@ -20,10 +20,11 @@ public class HelpScreen extends Screen {
 	public HelpScreen(AppMain p) {
 		super(p);
 		
-		helpScreens[0] = pApplet.loadImage("help_screen_1_640.png");
-		helpScreens[1] = pApplet.loadImage("help_screen_2_640.png");
+		helpScreens[0] = pApplet.loadImage("help_screen_1_1024.png");
+		helpScreens[1] = pApplet.loadImage("help_screen_2_1024.png");
 
 		this.background = helpScreens[0];
+		this.background.resize(AppMain.frameWidth, AppMain.frameHeight);
 		
 		deletePt = new Point(AppMain.frameWidth - 80, AppMain.frameHeight - 60);
 		
@@ -44,6 +45,7 @@ public class HelpScreen extends Screen {
 	
 	public void setHelpInfo(int helpIndex){
 		this.background = helpScreens[helpIndex];
+		this.background.resize(AppMain.frameWidth, AppMain.frameHeight);
 		lastScreen = pApplet.getCurrentScreen();
 		System.out.println(lastScreen);
 		System.out.println(nextScreen);
