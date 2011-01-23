@@ -18,9 +18,9 @@ public class HeartTemplate extends DrawTemplate{
 		numStages = 3;
 		
 		stageImages = new PImage[numStages];
-		stageImages[0] = pApplet.loadImage("./res/template_heart_1.png");
-		stageImages[1] = pApplet.loadImage("./res/template_heart_2.png");
-		stageImages[2] = pApplet.loadImage("./res/template_heart_3.png");
+		stageImages[0] = pApplet.loadImage("template_heart_1.png");
+		stageImages[1] = pApplet.loadImage("template_heart_2.png");
+		stageImages[2] = pApplet.loadImage("template_heart_3.png");
 		
 		startPoints = new Point[numStages];
 		startPoints[0] = new Point(318,315);

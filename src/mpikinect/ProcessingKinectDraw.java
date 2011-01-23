@@ -81,20 +81,20 @@ public class ProcessingKinectDraw extends PApplet {
 		gPath = createGraphics(w, h, P2D);
 		gPath.background(0,0);
 
-		deleteIcon = loadImage("./res/Delete.png");
-		startIcon = loadImage("./res/startButton.png");
-		stopIcon = loadImage("./res/stopButton.png");
+		deleteIcon = loadImage("Delete.png");
+		startIcon = loadImage("startButton.png");
+		stopIcon = loadImage("stopButton.png");
 
-		graffitiGreen = loadImage("./res/graffiti_green.png");
-		graffitiBlue = loadImage("./res/graffiti_blue.png");
-		graffitiRed = loadImage("./res/graffiti_red.png");
+		graffitiGreen = loadImage("graffiti_green.png");
+		graffitiBlue = loadImage("graffiti_blue.png");
+		graffitiRed = loadImage("graffiti_red.png");
 
 		template = new HeartTemplate(this);
 
 		//test button
 		testButton = new Button(
-				loadImage("./res/button_graffiti_red_1.png"),
-				loadImage("./res/button_graffiti_red_2.png"),
+				loadImage("button_graffiti_red_1.png"),
+				loadImage("button_graffiti_red_2.png"),
 				200, 200, 
 				Button.LOADING_BOTTOM_TO_TOP,
 				this);

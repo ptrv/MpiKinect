@@ -8,7 +8,7 @@ public class DrawingScreen extends Screen {
 
 	public DrawingScreen(PApplet p) {
 		super(p);
-		this.background = parent.loadImage("./res/testBackgroundDrawing.png");
+		this.background = parent.loadImage("testBackgroundDrawing.png");
 	}
 
 	@Override

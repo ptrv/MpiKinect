@@ -15,7 +15,7 @@ public class TemplateChooserScreen extends Screen {
 	
 	public TemplateChooserScreen(PApplet p) {
 		super(p);
-		this.background = parent.loadImage("./res/testBackgroundTemplate.png");
+		this.background = parent.loadImage("testBackgroundTemplate.png");
 		currentTemplateIndex = 0;
 	}
 

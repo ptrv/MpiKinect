@@ -12,7 +12,7 @@ public class HomeScreen extends Screen {
 	
 	public HomeScreen(PApplet p) {
 		super(p);
-		this.background = parent.loadImage("./res/testBackgroundHome.png");
+		this.background = parent.loadImage("testBackgroundHome.png");
 //		icon1 = parent.loadImage("");
 //		icon2 = parent.loadImage("");
 	}

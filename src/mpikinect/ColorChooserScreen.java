@@ -11,11 +11,11 @@ public class ColorChooserScreen extends Screen {
 	
 	public ColorChooserScreen(PApplet p) {
 		super(p);
-		this.background = parent.loadImage("./res/testBackgroundColor.png");
+		this.background = parent.loadImage("testBackgroundColor.png");
 		
-		graffitiRed = parent.loadImage("./res/graffiti_green.png");
-		graffitiGreen = parent.loadImage("./res/graffiti_blue.png");
-		graffitiBlue = parent.loadImage("./res/graffiti_red.png");
+		graffitiRed = parent.loadImage("graffiti_green.png");
+		graffitiGreen = parent.loadImage("graffiti_blue.png");
+		graffitiBlue = parent.loadImage("graffiti_red.png");
 
 	}
 
