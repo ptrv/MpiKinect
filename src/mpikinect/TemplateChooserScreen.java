@@ -15,6 +15,8 @@ public class TemplateChooserScreen extends Screen {
 	
 	private int currentTemplateIndex;
 	private Button buttonPrev, buttonPick, buttonNext;
+	private HelpOverlay helpOverlay;
+	private boolean interactionEnabled = true;
 	
 	public TemplateChooserScreen(AppMain p) {
 		super(p);
@@ -34,13 +36,16 @@ public class TemplateChooserScreen extends Screen {
 		this.buttonNext = new Button(imgButton3e, imgButton3f, (int)(0.75*AppMain.frameWidth), (int)(0.67*AppMain.frameHeight), Button.LOADING_LEFT_TO_RIGHT, p);
 
 		currentTemplateIndex = 0;
+		
+		PImage helpImg = pApplet.loadImage("help_screen1_1024.png");
+		helpOverlay = new HelpOverlay(helpImg, p);
 	}
 
 	@Override
 	void draw(Point p) {
 		pApplet.image(background, 0,0);
 		
-        if(buttonPrev.isPointOnButton(p)) {
+        if(buttonPrev.isPointOnButton(p) && interactionEnabled) {
             if(buttonPrev.hover(pApplet.millis())) { //ok, button is hovered, update overlay animation
                 System.out.println("buttonPrev is clicked!!!");
                 pApplet.setExpertMode(true);
@@ -53,7 +58,7 @@ public class TemplateChooserScreen extends Screen {
 
         buttonPrev.draw();
 
-        if(buttonNext.isPointOnButton(p)) {
+        if(buttonNext.isPointOnButton(p) && interactionEnabled) {
             if(buttonNext.hover(pApplet.millis())) { //ok, button is hovered, update overlay animation
                 System.out.println("buttonNext is clicked!!!");
                 pApplet.setExpertMode(true);
@@ -66,15 +71,12 @@ public class TemplateChooserScreen extends Screen {
 
         buttonNext.draw();
 
-        if(buttonPick.isPointOnButton(p)) {
+        if(buttonPick.isPointOnButton(p) && interactionEnabled) {
             if(buttonPick.hover(pApplet.millis())) { //ok, button is hovered, update overlay animation
                 System.out.println("buttonPick is clicked!!!");
                 pApplet.setExpertMode(true);
 
-                //pApplet.setCurrentScreen(Screens.DRAWING);
-
-                pApplet.setHelpInfo(1);
-                pApplet.setCurrentScreen(Screens.HELP);
+                pApplet.setCurrentScreen(Screens.DRAWING);
 
                 buttonPick.release();
             }
@@ -85,6 +87,20 @@ public class TemplateChooserScreen extends Screen {
         buttonPick.draw();
         
         showTemplateThumbnail(currentTemplateIndex);
+        
+        
+        
+        
+        if(pApplet.isExpertMode()) {
+        	if(!helpOverlay.overlay(pApplet.millis())) {
+        		helpOverlay.setOverlayEnabled(false);
+        		interactionEnabled = true;
+        	}
+        	else
+        		interactionEnabled = false;
+        			
+        	helpOverlay.draw();
+        }
 
 	}
 

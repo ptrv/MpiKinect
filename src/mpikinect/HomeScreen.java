@@ -39,8 +39,7 @@ public class HomeScreen extends Screen {
 			if(button1.hover(pApplet.millis())) { //ok, button is hovered, update overlay animation
 				System.out.println("Button1 is clicked!!!");
 				pApplet.setExpertMode(true);
-				pApplet.setHelpInfo(0);
-				pApplet.setCurrentScreen(Screens.HELP);
+				pApplet.setCurrentScreen(Screens.TEMPLATE_CHOOSER);
 				button1.release();
 			}
 		}
