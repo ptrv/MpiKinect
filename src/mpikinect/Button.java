@@ -12,7 +12,7 @@ public class Button {
 	public static int LOADING_RIGHT_TO_LEFT = 2;
 	
 	
-	public static int LOADING_DURATION = 2000; //in ms 
+	public static int LOADING_DURATION = 1500; //in ms 
 	
 	
 	

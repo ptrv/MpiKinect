@@ -8,9 +8,11 @@ public class HelpOverlay {
 	
 	PImage helpImg;
 	AppMain pApplet;
-	float startTime;
+	float startTime, dt;
 	boolean overlayActive = false;
 	boolean overlayEnabled = true;
+	int countShowings = 0;
+	int maxNumShowings = 1;
 	
 	public HelpOverlay(PImage image, AppMain main) {
 		this.helpImg = image;
@@ -26,8 +28,9 @@ public class HelpOverlay {
 		if(!overlayActive) {
 			startTime = time;
 			overlayActive = true;
+			countShowings++;
 		}
-		float dt = time-startTime;
+		dt = time-startTime;
 		
 		if(dt > OVERLAY_DURATION) {
 			overlayActive = false;
@@ -40,6 +43,13 @@ public class HelpOverlay {
 	
 	public void setOverlayEnabled(boolean enable) {
 		overlayEnabled = enable;
+		
+		if(overlayEnabled && countShowings>=maxNumShowings)
+			overlayEnabled = false;
+	}
+	
+	public boolean isEnabled() {
+		return overlayEnabled;
 	}
 	
 	
@@ -47,7 +57,16 @@ public class HelpOverlay {
 		if(!overlayEnabled || !overlayActive)
 			return;
 		
+		
+		
+		
 		pApplet.image(helpImg, 0, 0);
+		
+		int sec = (int)Math.ceil((OVERLAY_DURATION-dt)/1000);
+		pApplet.fill(255);
+		pApplet.textSize(30);
+		pApplet.text(""+sec, (int)(0.58*AppMain.frameWidth), (int)(0.34*AppMain.frameHeight));
+		
 		
 		//TODO: Countdown and/or cancel button
 		

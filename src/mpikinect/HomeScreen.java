@@ -38,7 +38,7 @@ public class HomeScreen extends Screen {
 		if(button1.isPointOnButton(p)) {
 			if(button1.hover(pApplet.millis())) { //ok, button is hovered, update overlay animation
 				System.out.println("Button1 is clicked!!!");
-				pApplet.setExpertMode(true);
+				pApplet.setHelpMode(true);
 				pApplet.setCurrentScreen(Screens.TEMPLATE_CHOOSER);
 				button1.release();
 			}
@@ -53,7 +53,7 @@ public class HomeScreen extends Screen {
 		if(button2.isPointOnButton(p)) {
 			if(button2.hover(pApplet.millis())) { 
 				System.out.println("Button2 is clicked!!!");
-				pApplet.setExpertMode(false);
+				pApplet.setHelpMode(false);
 				pApplet.setCurrentScreen(Screens.TEMPLATE_CHOOSER);
 				button2.release();
 			}

@@ -39,6 +39,7 @@ public class TemplateChooserScreen extends Screen {
 		
 		PImage helpImg = pApplet.loadImage("help_screen1_1024.png");
 		helpOverlay = new HelpOverlay(helpImg, p);
+		
 	}
 
 	@Override
@@ -48,7 +49,6 @@ public class TemplateChooserScreen extends Screen {
         if(buttonPrev.isPointOnButton(p) && interactionEnabled) {
             if(buttonPrev.hover(pApplet.millis())) { //ok, button is hovered, update overlay animation
                 System.out.println("buttonPrev is clicked!!!");
-                pApplet.setExpertMode(true);
                 currentTemplateIndex--;
                 buttonPrev.release();
             }
@@ -61,7 +61,6 @@ public class TemplateChooserScreen extends Screen {
         if(buttonNext.isPointOnButton(p) && interactionEnabled) {
             if(buttonNext.hover(pApplet.millis())) { //ok, button is hovered, update overlay animation
                 System.out.println("buttonNext is clicked!!!");
-                pApplet.setExpertMode(true);
                 currentTemplateIndex++;
                 buttonNext.release();
             }
@@ -74,10 +73,7 @@ public class TemplateChooserScreen extends Screen {
         if(buttonPick.isPointOnButton(p) && interactionEnabled) {
             if(buttonPick.hover(pApplet.millis())) { //ok, button is hovered, update overlay animation
                 System.out.println("buttonPick is clicked!!!");
-                pApplet.setExpertMode(true);
-
                 pApplet.setCurrentScreen(Screens.DRAWING);
-
                 buttonPick.release();
             }
         }
@@ -91,7 +87,7 @@ public class TemplateChooserScreen extends Screen {
         
         
         
-        if(pApplet.isExpertMode()) {
+        if(pApplet.isHelpMode()) {
         	if(!helpOverlay.overlay(pApplet.millis())) {
         		helpOverlay.setOverlayEnabled(false);
         		interactionEnabled = true;

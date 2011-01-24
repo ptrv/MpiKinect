@@ -35,6 +35,9 @@ public abstract class DrawTemplate {
 	public PImage getCurrentStageImage() {
 		return stageImages[stage];
 	}
+	public int getCurrentStage() {
+		return stage;
+	}
 	
 	public void reset() {
 		stage = 0;

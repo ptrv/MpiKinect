@@ -21,6 +21,8 @@ public class DrawingScreen extends Screen {
 	boolean startPossible = true;
 	boolean stopPossible = false;
 	
+	boolean interactionEnabled = true;
+	
 	DrawTemplate template;
 	
 	float startStopAreaSizeX = 1.2f;
@@ -29,6 +31,8 @@ public class DrawingScreen extends Screen {
 	private Color strokeColor = null;
 	private Button graffitiRed, graffitiGreen, graffitiOrange, graffitiBlue, undo;
 	private Button currentGraffitiButton;
+	
+	private HelpOverlay helpOverlayColor, helpOverlayDrawing, helpOverlayUndo;
 	
 	public DrawingScreen(AppMain p) {
 		super(p);
@@ -61,6 +65,15 @@ public class DrawingScreen extends Screen {
 		stopIcon = pApplet.loadImage("buttons/stopButton.png");
 		
 		template = new HeartTemplate(p);
+		
+		PImage helpImgColor = pApplet.loadImage("help_screen2_1024.png");
+		helpOverlayColor = new HelpOverlay(helpImgColor, p);
+		PImage helpImgDrawing = pApplet.loadImage("help_screen3_1024.png");
+		helpOverlayDrawing = new HelpOverlay(helpImgDrawing, p);
+		helpOverlayDrawing.setOverlayEnabled(false);
+		PImage helpImgUndo = pApplet.loadImage("help_screen4_1024.png");
+		helpOverlayUndo = new HelpOverlay(helpImgUndo, p);
+		helpOverlayUndo.setOverlayEnabled(false);
 	}
 
 	@Override
@@ -70,10 +83,12 @@ public class DrawingScreen extends Screen {
 		/*
 		 * process graffiti color buttons
 		 */
-		if(!drawingMode) {
+		if(!drawingMode && interactionEnabled) {
 	        if(graffitiRed.isPointOnButton(p)) {
 	            if(graffitiRed.hover(pApplet.millis())) { 
 	                System.out.println("graffitiRed is clicked!!!");
+	                if(strokeColor==null)
+	                	helpOverlayDrawing.setOverlayEnabled(true);
 	                strokeColor = Color.RED;
 	                if(currentGraffitiButton!=null && currentGraffitiButton!=graffitiRed)
 	                	currentGraffitiButton.release();
@@ -86,6 +101,8 @@ public class DrawingScreen extends Screen {
 			if(graffitiGreen.isPointOnButton(p)) {
 	            if(graffitiGreen.hover(pApplet.millis())) { 
 	                System.out.println("graffitiGreen is clicked!!!");
+	                if(strokeColor==null)
+	                	helpOverlayDrawing.setOverlayEnabled(true);
 	                strokeColor = Color.GREEN;
 	                if(currentGraffitiButton!=null && currentGraffitiButton!=graffitiGreen)
 	                	currentGraffitiButton.release();
@@ -96,10 +113,11 @@ public class DrawingScreen extends Screen {
 	        	graffitiGreen.release();
 
 
-			
 	        if(graffitiOrange.isPointOnButton(p)) {
 	            if(graffitiOrange.hover(pApplet.millis())) { 
 	                System.out.println("graffitiOrange is clicked!!!");
+	                if(strokeColor==null)
+	                	helpOverlayDrawing.setOverlayEnabled(true);
 	                strokeColor = Color.ORANGE;
 	                if(currentGraffitiButton!=null && currentGraffitiButton!=graffitiOrange)
 	                	currentGraffitiButton.release();
@@ -113,6 +131,8 @@ public class DrawingScreen extends Screen {
 	        if(graffitiBlue.isPointOnButton(p)) {
 	            if(graffitiBlue.hover(pApplet.millis())) { 
 	                System.out.println("graffitiBlue is clicked!!!");
+	                if(strokeColor==null)
+	                	helpOverlayDrawing.setOverlayEnabled(true);
 	                strokeColor = Color.BLUE;
 	                if(currentGraffitiButton!=null && currentGraffitiButton!=graffitiBlue)
 	                	currentGraffitiButton.release();
@@ -133,7 +153,7 @@ public class DrawingScreen extends Screen {
 		 * process undo button
 		 */
 		
-        if(undo.isPointOnButton(p)) {
+        if(undo.isPointOnButton(p) && interactionEnabled) {
             if(undo.hover(pApplet.millis())) { 
                 erasePath();
                 template.reset();
@@ -145,8 +165,23 @@ public class DrawingScreen extends Screen {
         undo.draw();
         
         
-        if(strokeColor==null)
+        if(strokeColor==null) {
+        	
+            if(pApplet.isHelpMode()) {
+            	if(!helpOverlayColor.overlay(pApplet.millis())) {
+            		helpOverlayColor.setOverlayEnabled(false);
+            		interactionEnabled = true;
+            	}
+            	else
+            		interactionEnabled = false;
+            			
+            	helpOverlayColor.draw();
+            }
+        	
+        	
         	return;
+        }
+        	
         
         
 		
@@ -154,7 +189,7 @@ public class DrawingScreen extends Screen {
 		/*
 		 * process template drawing
 		 */
-		if(!template.isFinished()) {
+		if(!template.isFinished() && interactionEnabled) {
 
 			Point start = template.getCurrentStartPoint();
 			Point stop = template.getCurrentStopPoint();
@@ -185,6 +220,9 @@ public class DrawingScreen extends Screen {
 					curvePoints = null;
 					drawingMode = false;  
 
+					if(template.getCurrentStage()==0)
+						helpOverlayUndo.setOverlayEnabled(true);
+					
 					if(!template.nextStage()) {
 						return;
 					}
@@ -217,8 +255,35 @@ public class DrawingScreen extends Screen {
 			pApplet.image(template.getCurrentStageImage(), 0, 0); 
 		}
 
-
 		pApplet.image(gPath, 0, 0);
+		
+		
+		/*
+		 * process help overlays
+		 */
+        if(pApplet.isHelpMode()) {
+        	if(helpOverlayUndo.isEnabled()) {
+            	if(!helpOverlayUndo.overlay(pApplet.millis())) {
+            		helpOverlayUndo.setOverlayEnabled(false);
+            		interactionEnabled = true;
+            	}
+            	else
+            		interactionEnabled = false;
+            			
+            	helpOverlayUndo.draw();
+        	}
+        	else if(helpOverlayDrawing.isEnabled()) {
+            	if(!helpOverlayDrawing.overlay(pApplet.millis())) {
+            		helpOverlayDrawing.setOverlayEnabled(false);
+            		interactionEnabled = true;
+            	}
+            	else
+            		interactionEnabled = false;
+            			
+            	helpOverlayDrawing.draw();
+        	}
+
+        }
 
 	}
 	

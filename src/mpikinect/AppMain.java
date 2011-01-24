@@ -49,7 +49,7 @@ public class AppMain extends PApplet {
 	private Screens currentScreen = Screens.HOME;
 	
 	
-	private boolean expertMode; 
+	private boolean helpModeEnabled; 
 	
 	
 	public void setup() {
@@ -77,7 +77,6 @@ public class AppMain extends PApplet {
 	}
 
 	public void draw() {
-		
 		
 		/*
 		 * STEP1: Do hand detection
@@ -169,11 +168,11 @@ public class AppMain extends PApplet {
 		super.stop();
 	}
 
-	public void setExpertMode(boolean enableExpertMode) {
-		this.expertMode = enableExpertMode;
+	public void setHelpMode(boolean enableHelpMode) {
+		this.helpModeEnabled = enableHelpMode;
 	}
-	public boolean isExpertMode() {
-		return expertMode;
+	public boolean isHelpMode() {
+		return helpModeEnabled;
 	}
 	
 	
