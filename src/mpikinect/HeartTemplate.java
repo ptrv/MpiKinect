@@ -18,19 +18,20 @@ public class HeartTemplate extends DrawTemplate{
 		numStages = 3;
 		
 		stageImages = new PImage[numStages];
-		stageImages[0] = pApplet.loadImage("templates/template_heart_1.png");
-		stageImages[1] = pApplet.loadImage("templates/template_heart_2.png");
-		stageImages[2] = pApplet.loadImage("templates/template_heart_3.png");
+		stageImages[0] = pApplet.loadImage("templates/template_heart_1_1024.png");
+		stageImages[1] = pApplet.loadImage("templates/template_heart_2_1024.png");
+		stageImages[2] = pApplet.loadImage("templates/template_heart_3_1024.png");
+		AppMain.adjustImageSize(stageImages);
 		
 		startPoints = new Point[numStages];
-		startPoints[0] = new Point(318,315);
-		startPoints[1] = new Point(221,151);
-		startPoints[2] = new Point(413,145);
+		startPoints[0] = new Point((int)(0.505f*AppMain.frameWidth),(int)(0.659f*AppMain.frameHeight));
+		startPoints[1] = new Point((int)(0.309f*AppMain.frameWidth),(int)(0.243f*AppMain.frameHeight));
+		startPoints[2] = new Point((int)(0.700f*AppMain.frameWidth),(int)(0.221f*AppMain.frameHeight));
 		
 		stopPoints = new Point[numStages];
-		stopPoints[0] = new Point(318,315);
-		stopPoints[1] = new Point(221,151);
-		stopPoints[2] = new Point(413,145);
+		stopPoints[0] = new Point((int)(0.505f*AppMain.frameWidth),(int)(0.659f*AppMain.frameHeight));
+		stopPoints[1] = new Point((int)(0.309f*AppMain.frameWidth),(int)(0.243f*AppMain.frameHeight));
+		stopPoints[2] = new Point((int)(0.700f*AppMain.frameWidth),(int)(0.221f*AppMain.frameHeight));
 
 		
 	}

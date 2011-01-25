@@ -29,7 +29,7 @@ public class TemplateChooserScreen extends Screen {
 		PImage imgButton2f = pApplet.loadImage("buttons/button_2_2_full.png");
 		PImage imgButton3e = pApplet.loadImage("buttons/button_2_3_empty.png");
 		PImage imgButton3f = pApplet.loadImage("buttons/button_2_3_full.png");
-		adjustImageSize(imgButton1e, imgButton1f, imgButton2e, imgButton2f, imgButton3e, imgButton3f);
+		AppMain.adjustImageSize(imgButton1e, imgButton1f, imgButton2e, imgButton2f, imgButton3e, imgButton3f);
 		
 		this.buttonPrev = new Button(imgButton1e, imgButton1f, (int)(0.07*AppMain.frameWidth), (int)(0.67*AppMain.frameHeight), Button.LOADING_RIGHT_TO_LEFT, p);
 		this.buttonPick = new Button(imgButton2e, imgButton2f, (int)(0.38*AppMain.frameWidth), (int)(0.67*AppMain.frameHeight), Button.LOADING_LEFT_TO_RIGHT, p);

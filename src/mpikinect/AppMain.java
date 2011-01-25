@@ -35,8 +35,8 @@ public class AppMain extends PApplet {
 
 	private Kinect kinect;
 	private boolean enableDepth = true;
-	private boolean enableRGB = true;
-	private int tiltDegrees = 10;
+	private boolean enableRGB = false;
+	private int tiltDegrees = 18;
 
 
 	private HandDetector handDetector;
@@ -160,6 +160,9 @@ public class AppMain extends PApplet {
 			enableRGB = !enableRGB;
 			kinect.enableRGB(enableRGB);
 		}
+		else if (key == 's') {
+			DEBUG_MODE = !DEBUG_MODE;
+		}
 
 	}
 
@@ -186,9 +189,22 @@ public class AppMain extends PApplet {
 	
 
 
-
+	/**
+	 * resizes PImages in such way that they are adjusted to current frame dimensions
+	 */
+	public static void adjustImageSize(PImage... images) {
+		float ratioW = (float)AppMain.frameWidth/AppMain.originalWidth;
+		float ratioH = (float)AppMain.frameHeight/AppMain.originalHeight;
+		
+		for (int i = 0; i < images.length; i++) {
+			PImage img = images[i];
+			img.resize((int)(img.width*ratioW), (int)(img.height*ratioH));
+		}
+	}
+	
+	
 
 	public static void main(String _args[]) {
-		PApplet.main(new String[] { mpikinect.AppMain.class.getName() });
+		PApplet.main(new String[] {mpikinect.AppMain.class.getName() });
 	}
 }

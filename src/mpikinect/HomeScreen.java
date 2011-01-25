@@ -21,7 +21,7 @@ public class HomeScreen extends Screen {
 		PImage imgButton1f = pApplet.loadImage("buttons/button_1_1_full.png");
 		PImage imgButton2e = pApplet.loadImage("buttons/button_1_2_empty.png");
 		PImage imgButton2f = pApplet.loadImage("buttons/button_1_2_full.png");
-		adjustImageSize(imgButton1e, imgButton1f, imgButton2e, imgButton2f);
+		AppMain.adjustImageSize(imgButton1e, imgButton1f, imgButton2e, imgButton2f);
 		
 		this.button1 = new Button(imgButton1e, imgButton1f, (int)(0.65*AppMain.frameWidth), (int)(0.52*AppMain.frameHeight), Button.LOADING_LEFT_TO_RIGHT, p);
 		this.button2 = new Button(imgButton2e, imgButton2f, (int)(0.65*AppMain.frameWidth), (int)(0.67*AppMain.frameHeight), Button.LOADING_LEFT_TO_RIGHT, p);

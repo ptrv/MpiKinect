@@ -49,7 +49,7 @@ public class DrawingScreen extends Screen {
 		PImage imgButton4f = pApplet.loadImage("buttons/button_3_4_full.png");
 		PImage imgButton5e = pApplet.loadImage("buttons/button_3_5_empty.png");
 		PImage imgButton5f = pApplet.loadImage("buttons/button_3_5_full.png");
-		adjustImageSize(imgButton1e, imgButton1f, imgButton2e, imgButton2f, imgButton3e, imgButton3f, imgButton4e, imgButton4f, imgButton5e, imgButton5f);
+		AppMain.adjustImageSize(imgButton1e, imgButton1f, imgButton2e, imgButton2f, imgButton3e, imgButton3f, imgButton4e, imgButton4f, imgButton5e, imgButton5f);
 
 		this.graffitiRed = 		new Button(imgButton1e, imgButton1f, (int)(0.05*AppMain.frameWidth), (int)(0.77*AppMain.frameHeight), Button.LOADING_BOTTOM_TO_TOP, p);
 		this.graffitiGreen = 	new Button(imgButton2e, imgButton2f, (int)(0.20*AppMain.frameWidth), (int)(0.77*AppMain.frameHeight), Button.LOADING_BOTTOM_TO_TOP, p);
@@ -245,14 +245,17 @@ public class DrawingScreen extends Screen {
 				drawCurvePoints(gPath, curvePoints);
 			}
 
+			
+			pApplet.image(template.getCurrentStageImage(), 0, 0); 
+			
 			if(!drawingMode) {
-				pApplet.image(startIcon, start.x-startStopAreaSizeX/2, start.y-startStopAreaSizeY/2);
+				pApplet.image(startIcon, start.x-startIcon.width/2, start.y-startIcon.height/2);
 			} 
 			else {
-				pApplet.image(stopIcon, stop.x-startStopAreaSizeX/2, stop.y-startStopAreaSizeY/2);
+				pApplet.image(stopIcon, stop.x-stopIcon.width/2, stop.y-stopIcon.height/2);
 			}
 
-			pApplet.image(template.getCurrentStageImage(), 0, 0); 
+
 		}
 
 		pApplet.image(gPath, 0, 0);
