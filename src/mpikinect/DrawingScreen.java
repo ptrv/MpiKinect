@@ -9,6 +9,7 @@ import mpikinect.AppMain.Screens;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 import processing.core.PImage;
+import processing.xml.XMLElement;
 
 public class DrawingScreen extends Screen {
 
@@ -23,7 +24,7 @@ public class DrawingScreen extends Screen {
 	
 	boolean interactionEnabled = true;
 	
-	DrawTemplate template;
+	DrawTemplate template = null;
 	
 	float startStopAreaSizeX = 1.2f;
 	float startStopAreaSizeY = 1.2f;
@@ -64,8 +65,6 @@ public class DrawingScreen extends Screen {
 		startIcon = pApplet.loadImage("buttons/startButton.png");
 		stopIcon = pApplet.loadImage("buttons/stopButton.png");
 		
-		template = new HeartTemplate(p);
-		
 		PImage helpImgColor = pApplet.loadImage("help_screen2_1024.png");
 		helpOverlayColor = new HelpOverlay(helpImgColor, p);
 		PImage helpImgDrawing = pApplet.loadImage("help_screen3_1024.png");
@@ -79,6 +78,8 @@ public class DrawingScreen extends Screen {
 	@Override
 	void draw(Point p) {
 		pApplet.image(background, 0,0);
+		if(template==null)
+			return;
 		
 		/*
 		 * process graffiti color buttons
@@ -340,6 +341,11 @@ public class DrawingScreen extends Screen {
 
 	public Color getStrokeColor() {
 		return strokeColor;
+	}
+
+	public void setCurrentTemplate(DrawTemplate template) {
+		this.template = template;
+		
 	}
 
 

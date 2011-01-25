@@ -6,12 +6,13 @@ import mpikinect.AppMain.Screens;
 
 import processing.core.PApplet;
 import processing.core.PImage;
+import processing.xml.XMLElement;
 
 public class TemplateChooserScreen extends Screen {
 
 	static final int NUM_TEMPLATES = 1;
 	
-//	PImage[] templates = new PImage[NUM_TEMPLATES];
+	DrawTemplate[] templates;
 	
 	private int currentTemplateIndex;
 	private Button buttonPrev, buttonPick, buttonNext;
@@ -39,6 +40,18 @@ public class TemplateChooserScreen extends Screen {
 		
 		PImage helpImg = pApplet.loadImage("help_screen1_1024.png");
 		helpOverlay = new HelpOverlay(helpImg, p);
+		
+		initTemplates();
+	}
+
+	private void initTemplates() {
+		XMLElement xml = new XMLElement(pApplet, "templates.xml");
+		int numTemplates = xml.getChildCount();
+		templates = new DrawTemplate[numTemplates];
+		for (int i = 0; i < numTemplates; i++) {
+			XMLElement template = xml.getChild(i);
+			templates[i] = new DrawTemplate(pApplet, template);			
+		}
 		
 	}
 
@@ -73,6 +86,7 @@ public class TemplateChooserScreen extends Screen {
         if(buttonPick.isPointOnButton(p) && interactionEnabled) {
             if(buttonPick.hover(pApplet.millis())) { //ok, button is hovered, update overlay animation
                 System.out.println("buttonPick is clicked!!!");
+                pApplet.setCurrentTemplate(templates[currentTemplateIndex]);
                 pApplet.setCurrentScreen(Screens.DRAWING);
                 buttonPick.release();
             }
@@ -115,4 +129,8 @@ public class TemplateChooserScreen extends Screen {
 		return currentTemplateIndex;
 	}
 
+
+	public DrawTemplate getCurrentTemplate() {
+		return templates[currentTemplateIndex];
+	}
 }

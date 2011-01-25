@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<resources>
+	<template name="heart">
+	
+		<thumbnail_full>whatever.png</thumbnail_full>
+	 	<thumbnail_empty>whatever.png</thumbnail_empty>
+	
+	   <stage id="1">
+	        <bg>templates/template_heart_1_1024.png</bg>
+	        <startx>0.505</startx>
+	        <starty>0.659</starty>
+			<endx>0.505</endx>
+			<endy>0.659</endy>
+	   </stage>
+	
+	   <stage id="2">
+	        <bg>templates/template_heart_2_1024.png</bg>
+	        <startx>0.309</startx>
+	        <starty>0.243</starty>
+			<endx>0.309</endx>
+			<endy>0.243</endy>
+	   </stage>
+	   <stage id="3">
+	        <bg>templates/template_heart_3_1024.png</bg>
+	        <startx>0.700</startx>
+	        <starty>0.221</starty>
+			<endx>0.7</endx>
+			<endy>0.221</endy>
+	   </stage>
+	</template>
+</resources>

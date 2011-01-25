@@ -202,7 +202,9 @@ public class AppMain extends PApplet {
 		}
 	}
 	
-	
+	public void setCurrentTemplate(DrawTemplate template) {
+		drawingScreen.setCurrentTemplate(template);
+	}
 
 	public static void main(String _args[]) {
 		PApplet.main(new String[] {mpikinect.AppMain.class.getName() });
