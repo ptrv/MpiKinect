@@ -2,16 +2,19 @@ package mpikinect;
 
 import java.awt.Point;
 
+import processing.core.PGraphics;
 import processing.core.PImage;
 import hypermedia.video.Blob;
 import hypermedia.video.OpenCV;
 
 public class HandDetector {
 	
-	private static final int 	rawDepthRangeMin = 400;
-	private static final int 	rawDepthRangeMax = 1000;
-	private static final int 	findNearestDistanceOffset = 4;
-	private static final float 	depthThreshold = 0.04f;
+	private static int 	rawDepthRangeMin = 400;
+	private static int 	rawDepthRangeMax = 1000;
+	private static int 	findNearestDistanceOffset = 4;
+	private static float 	depthThreshold = 0.07f;
+	
+	private static int maxHandMovement = 50; //in absolute px
 	
 	
 	
@@ -19,6 +22,8 @@ public class HandDetector {
 	private OpenCV opencv;
 	private int[] rawDepth;
 	private PImage depthTh;
+	private Blob[] blobs;
+	private Point oldHandPos;
 	
 	// We'll use a lookup table so that we don't have to repeat the math over and over
 	private float[] depthLookUp = new float[2048];
@@ -77,15 +82,39 @@ public class HandDetector {
 		opencv.copy(depthTh);
 
 		// find blobs
-		Blob[] blobs = opencv.blobs(50, imgWidth*imgHeight/2, 5, false);
+		blobs = opencv.blobs(50, imgWidth*imgHeight/2, 5, false);
 
 		if(blobs.length==0 || blobs == null)
 			return null;
 
-
-		Blob handBlob = blobs[0];	 // take biggest blob
+		///find biggest blob that meets distance constraint
+		Blob handBlob = blobs[0];
+		for (int i = 0; i < blobs.length; i++) {
+			Blob b = blobs[i];
+			if(oldHandPos!=null){
+				int dx = oldHandPos.x - b.centroid.x;
+				int dy = oldHandPos.y - b.centroid.y;
+				double dist = Math.sqrt(dx*dx + dy*dy);
+				if(dist > maxHandMovement) {
+					//System.out.println(dist);
+					continue;
+				}
+				else {
+					handBlob = b;
+					break;
+				}
+			}
+			else {
+				handBlob = blobs[0];
+				break;
+			}	
+		}
+		
+//		if(handBlob==null)
+//			return null;
 		
 		
+		oldHandPos = handBlob.centroid;
 		Hand hand = new Hand(handBlob, nearPoint, nearestDist);
 		
 		return hand;
@@ -139,5 +168,27 @@ public class HandDetector {
 	  return 0.0f;
 	}
 	
+
+	
+	public PImage getDepthImage(){
+		return depthTh;
+	}
+	public Blob[] getBlobs() {
+		return blobs;
+	}
+	
+	
+	
+	public static void increaseThreshold() {
+		HandDetector.depthThreshold += 0.01f;
+		System.out.println("increase depth th: " + depthThreshold);
+	}
+	public static void decreaseThreshold() {
+		HandDetector.depthThreshold -= 0.01f;
+		if(HandDetector.depthThreshold<0)
+			HandDetector.depthThreshold = 0;
+		
+		System.out.println("decrease depth th: " + depthThreshold);
+	}
 	
 }

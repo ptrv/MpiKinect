@@ -3,20 +3,22 @@ package mpikinect;
 import java.awt.Point;
 
 import processing.core.PApplet;
+import processing.core.PGraphics;
 import processing.core.PImage;
 import processing.xml.XMLElement;
 
 public class DrawTemplate {
-	protected PApplet pApplet;
-	protected int stage;
-	protected int numStages;
-	protected Point[] startPoints;
-	protected Point[] stopPoints;
-	protected PImage[] stageImages;
-	protected XMLElement xml;
-	protected String xmlPath;
-	protected PImage thumbnailFull;
-	protected PImage thumbnailEmpty;
+	private PApplet pApplet;
+	private int stage;
+	private int numStages;
+	private Point[] startPoints;
+	private Point[] stopPoints;
+	private PImage[] stageImages;
+	private XMLElement xml;
+	private String xmlPath;
+	private PImage thumbnailFull;
+	private PImage thumbnailEmpty;
+	
 
 	public DrawTemplate(PApplet p){
 		this.pApplet = p;
@@ -48,14 +50,25 @@ public class DrawTemplate {
 			float endX = Float.parseFloat(stages[i].getChild("endx").getContent());
 			float endY = Float.parseFloat(stages[i].getChild("endy").getContent());
 			stopPoints[i] = new Point((int)(endX*AppMain.frameWidth),(int)(endY*AppMain.frameHeight));
-			
 		}
 		AppMain.adjustImageSize(stageImages);
+
 	}
+	
+	
 	
 	public boolean nextStage() {
 		stage++;
 		if(stage >= numStages) {
+			stage = numStages-1;
+			return false;
+		}
+		return true;
+	}
+	public boolean previousStage() {
+		stage--;
+		if(stage < 0) {
+			stage = 0;
 			return false;
 		}
 		return true;
@@ -72,6 +85,9 @@ public class DrawTemplate {
 	}
 	public int getCurrentStage() {
 		return stage;
+	}
+	public int getNumStages() {
+		return numStages;
 	}
 	
 	public void reset() {

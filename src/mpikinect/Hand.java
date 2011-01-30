@@ -25,22 +25,26 @@ public class Hand {
 	}
 	
 	public Point getCentroid() {
+		//consider stretching factor
+		float f = AppMain.detectionStretchFactor;
+		float _x = blob.centroid.x*f - ((640f*f - 640f)/2f);
+		float _y = blob.centroid.y*f - ((480f*f - 480f)/2f);
+		
 		//adjust point to frameSize;
-		Point cent = new Point((int)(blob.centroid.x*ratioW), (int)(blob.centroid.y*ratioH));
+		_x *= ratioW;
+		_y *= ratioH;
+		
+		_x = AppMain.constrain(_x, 0, AppMain.frameWidth);
+		_y = AppMain.constrain(_y, 0, AppMain.frameHeight);
+		
+		Point cent = new Point((int)(_x), (int)(_y));
 		return cent;
 	}
+	
 	public float getDistance() {
 		return distance;
 	}
-	public Rectangle getBoundingBox() {
-		//adjust rectangle to frameSize;
-		Rectangle bb = new Rectangle((int)(blob.rectangle.x*ratioW), (int)(blob.rectangle.y*ratioH), (int)(blob.rectangle.width*ratioW), (int)(blob.rectangle.height*ratioH));
-		return bb;
-	}
-	public Point getNearestPoint() {
-		//adjust point to frameSize;
-		Point p = new Point((int)(nearPoint.x*ratioW), (int)(nearPoint.y*ratioH));
-		return p;
-	}
+	
+
 	
 }

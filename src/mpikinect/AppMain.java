@@ -1,5 +1,7 @@
 package mpikinect;
 
+import hypermedia.video.Blob;
+
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -17,6 +19,9 @@ public class AppMain extends PApplet {
 	
 	public static boolean DEBUG_MODE = true;
 	
+	/* * * * * * * * * * * * 
+	 * BEGIN CONFIGURATION
+	 * * * * * * * * * * * */
 	
 	//dimension of application
 	public static int frameWidth = 640;
@@ -25,6 +30,22 @@ public class AppMain extends PApplet {
 	//dimension for which images/icons etc. are designed
 	public static int originalWidth = 1024;
 	public static int originalHeight = 768;
+	
+	//virtually stretch depth image; i.e. boundary areas of the depth images are mapped to regions outside the frame size
+	//makes it easier to reach border areas on the frame 
+	public static float detectionStretchFactor = 1.3f; 
+	
+	private static float filtering_motion_threshold = 0.015f; //relative to frameSize
+	private static float filtering_oldhand_weight = 0.75f;
+	
+	/* * * * * * * * * * * * 
+	 * END CONFIGURATION
+	 * * * * * * * * * * * */
+	
+	
+	
+	
+	
 	
 	
 	public enum Screens
@@ -51,15 +72,20 @@ public class AppMain extends PApplet {
 	
 	private boolean helpModeEnabled; 
 	
+
+	private Point oldHandCentroid;
+	private boolean filtering_enabled = true;
 	
 	public void setup() {
-		size(frameWidth, frameHeight+40);
+		if(DEBUG_MODE)
+			size(frameWidth + 640, frameHeight+40);
+		else
+			size(frameWidth, frameHeight);
 
 		kinect = new Kinect(this);
 		kinect.start();
 		kinect.enableDepth(enableDepth);
 		kinect.enableRGB(enableRGB);
-		//kinect.enableIR(false);
 		kinect.tilt(tiltDegrees);
 		kinect.processDepthImage(false);
 
@@ -73,7 +99,6 @@ public class AppMain extends PApplet {
 		homeScreen = new HomeScreen(this);
 		templateChooser = new TemplateChooserScreen(this);
 		drawingScreen = new DrawingScreen(this);
-
 	}
 
 	public void draw() {
@@ -87,20 +112,33 @@ public class AppMain extends PApplet {
 		if(hand==null)
 			return;
 
-		Point p = hand.getCentroid();
-		Rectangle bb = hand.getBoundingBox();
+		Point p = hand.getCentroid();		
+		
+		
+		
+		//filtering of centroid: also take old point into account
+		if(oldHandCentroid!=null && filtering_enabled) {
+			float dx = Math.abs(p.x - oldHandCentroid.x);
+			float dy = Math.abs(p.y - oldHandCentroid.y);
+			if(dx < frameWidth*filtering_motion_threshold && dy < frameHeight*filtering_motion_threshold) {
+				p.x = (int)Math.round(filtering_oldhand_weight*oldHandCentroid.x + (1-filtering_oldhand_weight)*p.x);
+				p.y = (int)Math.round(filtering_oldhand_weight*oldHandCentroid.y + (1-filtering_oldhand_weight)*p.y);
+//				oldHandCentroid.x = (int)Math.round( (oldHandCentroid.x + p.x)/2f );
+//				oldHandCentroid.y = (int)Math.round( (oldHandCentroid.y + p.y)/2f );
+				oldHandCentroid = p;
+			}
+			else
+				oldHandCentroid = p;
+		}
+		else
+			oldHandCentroid = p;
+		
+		
 
 		//draw hand
 		gPointer.beginDraw();
 		gPointer.background(0,0);
 		gPointer.image(cursorImg, p.x-0.44f*cursorImg.width, p.y-0.54f*cursorImg.height);
-		if(DEBUG_MODE) {
-			gPointer.noFill();
-			gPointer.stroke(0, 0, 255);
-			gPointer.strokeWeight(3);
-			gPointer.rect(bb.x, bb.y, bb.width, bb.height);
-			gPointer.ellipse(p.x-2, p.y-2, 5, 5);
-		}
 		gPointer.endDraw();
 
 
@@ -134,9 +172,29 @@ public class AppMain extends PApplet {
 		image(gPointer, 0, 0); 
 
 		
-		
-		//fill(255);
-		//text("nearest depth: " + hand.getDistance(),10,frameHeight + 35);
+		if(DEBUG_MODE) {
+			fill(255);
+			text("nearest depth: " + hand.getDistance(),10,frameHeight + 35);
+			image(handDetector.getDepthImage(),frameWidth,0);
+			
+			Blob[] blobs = handDetector.getBlobs();
+			
+			noFill();
+			stroke(0, 0, 255);
+			strokeWeight(3);
+			for (int i = 0; i < blobs.length; i++) {
+				Rectangle bb = blobs[i].rectangle;
+				Point c = blobs[i].centroid;
+				ellipse(frameWidth+c.x-2, c.y-2, 5, 5);
+				rect(frameWidth+bb.x, bb.y, bb.width, bb.height);
+			}
+			
+			stroke(0, 255, 0);
+			ellipse(frameWidth+p.x-2, p.y-2, 5, 5);
+
+			
+		}
+
 	}
 
 	private PImage flipImage(PImage img) {
@@ -152,7 +210,7 @@ public class AppMain extends PApplet {
 	}
 
 	public void keyPressed() {
-		if (key == 'd') {
+		if (key == 't') {
 			enableDepth = !enableDepth;
 			kinect.enableDepth(enableDepth);
 		} 
@@ -160,8 +218,18 @@ public class AppMain extends PApplet {
 			enableRGB = !enableRGB;
 			kinect.enableRGB(enableRGB);
 		}
-		else if (key == 's') {
+		else if (key == 'd') {
 			DEBUG_MODE = !DEBUG_MODE;
+		}
+		else if (key == 'f') {
+			filtering_enabled = !filtering_enabled;
+		}
+		
+		else if (key == '+') {
+			HandDetector.increaseThreshold();
+		}
+		else if (key == '-') {
+			HandDetector.decreaseThreshold();
 		}
 
 	}

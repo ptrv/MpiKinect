@@ -13,7 +13,14 @@ import processing.xml.XMLElement;
 
 public class DrawingScreen extends Screen {
 
-	PGraphics gPath;
+	public enum Modes
+	{
+		FIRST_COLOR_CHOOSE, DRAWING, END
+	}
+	private Modes currentMode = Modes.FIRST_COLOR_CHOOSE;
+	
+	
+	PGraphics[] gPaths;
 
 	Point[] curvePoints;
 
@@ -26,12 +33,13 @@ public class DrawingScreen extends Screen {
 	
 	DrawTemplate template = null;
 	
-	float startStopAreaSizeX = 1.2f;
-	float startStopAreaSizeY = 1.2f;
+	float startStopAreaFactor = 0.08f; //relative to frameWidth
+	float stopPossibleAreaFactor = 0.2f; //relative to frameWidth
 	
 	private Color strokeColor = null;
-	private Button graffitiRed, graffitiGreen, graffitiOrange, graffitiBlue, undo;
+	private Button graffitiRed, graffitiGreen, graffitiOrange, graffitiBlue, undo, redraw, cancel;
 	private Button currentGraffitiButton;
+	private PImage endBg;
 	
 	private HelpOverlay helpOverlayColor, helpOverlayDrawing, helpOverlayUndo;
 	
@@ -39,6 +47,8 @@ public class DrawingScreen extends Screen {
 		super(p);
 		this.background = pApplet.loadImage("screen3_bg_1024.png");
 		this.background.resize(AppMain.frameWidth, AppMain.frameHeight);
+		
+		this.endBg = pApplet.loadImage("screen3_end_bg_1024.png");
 		
 		PImage imgButton1e = pApplet.loadImage("buttons/button_3_1_empty.png");
 		PImage imgButton1f = pApplet.loadImage("buttons/button_3_1_full.png");
@@ -50,17 +60,22 @@ public class DrawingScreen extends Screen {
 		PImage imgButton4f = pApplet.loadImage("buttons/button_3_4_full.png");
 		PImage imgButton5e = pApplet.loadImage("buttons/button_3_5_empty.png");
 		PImage imgButton5f = pApplet.loadImage("buttons/button_3_5_full.png");
-		AppMain.adjustImageSize(imgButton1e, imgButton1f, imgButton2e, imgButton2f, imgButton3e, imgButton3f, imgButton4e, imgButton4f, imgButton5e, imgButton5f);
-
+		PImage imgButton6e = pApplet.loadImage("buttons/button_3_6_empty.png");
+		PImage imgButton6f = pApplet.loadImage("buttons/button_3_6_full.png");
+		PImage imgButton7e = pApplet.loadImage("buttons/button_3_7_empty.png");
+		PImage imgButton7f = pApplet.loadImage("buttons/button_3_7_full.png");
+		AppMain.adjustImageSize(imgButton1e, imgButton1f, imgButton2e, imgButton2f, imgButton3e, imgButton3f, imgButton4e, imgButton4f, imgButton5e, imgButton5f, imgButton6e, imgButton6f, imgButton7e, imgButton7f, endBg);
+		
 		this.graffitiRed = 		new Button(imgButton1e, imgButton1f, (int)(0.05*AppMain.frameWidth), (int)(0.77*AppMain.frameHeight), Button.LOADING_BOTTOM_TO_TOP, p);
 		this.graffitiGreen = 	new Button(imgButton2e, imgButton2f, (int)(0.20*AppMain.frameWidth), (int)(0.77*AppMain.frameHeight), Button.LOADING_BOTTOM_TO_TOP, p);
 		this.graffitiOrange = 	new Button(imgButton3e, imgButton3f, (int)(0.35*AppMain.frameWidth), (int)(0.77*AppMain.frameHeight), Button.LOADING_BOTTOM_TO_TOP, p);
 		this.graffitiBlue = 	new Button(imgButton4e, imgButton4f, (int)(0.50*AppMain.frameWidth), (int)(0.77*AppMain.frameHeight), Button.LOADING_BOTTOM_TO_TOP, p);
 		this.undo = 			new Button(imgButton5e, imgButton5f, (int)(0.80*AppMain.frameWidth), (int)(0.77*AppMain.frameHeight), Button.LOADING_RIGHT_TO_LEFT, p);
 		
+		this.cancel = 			new Button(imgButton6e, imgButton6f, (int)(0.088*AppMain.frameWidth), (int)(0.833*AppMain.frameHeight), Button.LOADING_LEFT_TO_RIGHT, p);
+		this.redraw = 			new Button(imgButton7e, imgButton7f, (int)(0.361*AppMain.frameWidth), (int)(0.833*AppMain.frameHeight), Button.LOADING_LEFT_TO_RIGHT, p);
 
-		gPath = pApplet.createGraphics(640, 480, pApplet.P2D);
-		gPath.background(0,0);
+		
 
 		startIcon = pApplet.loadImage("buttons/startButton.png");
 		stopIcon = pApplet.loadImage("buttons/stopButton.png");
@@ -81,142 +96,98 @@ public class DrawingScreen extends Screen {
 		if(template==null)
 			return;
 		
-		/*
-		 * process graffiti color buttons
-		 */
+		
+		
+		switch(currentMode) {
+			case FIRST_COLOR_CHOOSE:
+				processGraffitiButtons(p);
+				break;
+				
+			case DRAWING:
+				processGraffitiButtons(p);
+				processUndoButton(p);
+				processDrawing(p);
+				drawTemplate();
+				drawPath();
+				break;
+				
+			case END:
+				drawPath();
+				processEndMenu(p);
+				break;
+
+		}
+		
+		
+		
+		processHelpOverlays(p);
+
+
+	}
+	
+	
+	
+	private void processGraffitiButtons(Point p) {
 		if(!drawingMode && interactionEnabled) {
-	        if(graffitiRed.isPointOnButton(p)) {
-	            if(graffitiRed.hover(pApplet.millis())) { 
-	                System.out.println("graffitiRed is clicked!!!");
-	                if(strokeColor==null)
-	                	helpOverlayDrawing.setOverlayEnabled(true);
-	                strokeColor = Color.RED;
-	                if(currentGraffitiButton!=null && currentGraffitiButton!=graffitiRed)
-	                	currentGraffitiButton.release();
-	                currentGraffitiButton = graffitiRed;
-	            }
-	        }
-	        else if(currentGraffitiButton!=graffitiRed)
-	        	graffitiRed.release();
-
-			if(graffitiGreen.isPointOnButton(p)) {
-	            if(graffitiGreen.hover(pApplet.millis())) { 
-	                System.out.println("graffitiGreen is clicked!!!");
-	                if(strokeColor==null)
-	                	helpOverlayDrawing.setOverlayEnabled(true);
-	                strokeColor = Color.GREEN;
-	                if(currentGraffitiButton!=null && currentGraffitiButton!=graffitiGreen)
-	                	currentGraffitiButton.release();
-	                currentGraffitiButton = graffitiGreen;
-	            }
-	        }
-	        else if(currentGraffitiButton!=graffitiGreen)
-	        	graffitiGreen.release();
-
-
-	        if(graffitiOrange.isPointOnButton(p)) {
-	            if(graffitiOrange.hover(pApplet.millis())) { 
-	                System.out.println("graffitiOrange is clicked!!!");
-	                if(strokeColor==null)
-	                	helpOverlayDrawing.setOverlayEnabled(true);
-	                strokeColor = Color.ORANGE;
-	                if(currentGraffitiButton!=null && currentGraffitiButton!=graffitiOrange)
-	                	currentGraffitiButton.release();
-	                currentGraffitiButton = graffitiOrange;
-	            }
-	        }
-	        else if(currentGraffitiButton!=graffitiOrange)
-	        	graffitiOrange.release();
-
-			
-	        if(graffitiBlue.isPointOnButton(p)) {
-	            if(graffitiBlue.hover(pApplet.millis())) { 
-	                System.out.println("graffitiBlue is clicked!!!");
-	                if(strokeColor==null)
-	                	helpOverlayDrawing.setOverlayEnabled(true);
-	                strokeColor = Color.BLUE;
-	                if(currentGraffitiButton!=null && currentGraffitiButton!=graffitiBlue)
-	                	currentGraffitiButton.release();
-	                currentGraffitiButton = graffitiBlue;
-	            }
-	        }
-	        else if(currentGraffitiButton!=graffitiBlue)
-	        	graffitiBlue.release();
-
+	        doGraffitiButtonInteraction(p, graffitiRed, Color.RED);
+	        doGraffitiButtonInteraction(p, graffitiGreen, Color.GREEN);
+	        doGraffitiButtonInteraction(p, graffitiOrange, Color.ORANGE);
+	        doGraffitiButtonInteraction(p, graffitiBlue, Color.BLUE);
 		}
 		graffitiRed.draw();
 		graffitiGreen.draw();
         graffitiOrange.draw();
 		graffitiBlue.draw();
 		
-		
-		/*
-		 * process undo button
-		 */
-		
+		if(currentMode == Modes.FIRST_COLOR_CHOOSE && strokeColor!=null)
+			currentMode = Modes.DRAWING;
+	}
+	
+	private void processUndoButton(Point p) {
         if(undo.isPointOnButton(p) && interactionEnabled) {
             if(undo.hover(pApplet.millis())) { 
-                erasePath();
-                template.reset();
+                undoCurrentStep();
+                undo.release();
             }
         }
         else
         	undo.release();
 
         undo.draw();
-        
-        
-        if(strokeColor==null) {
-        	
-            if(pApplet.isHelpMode()) {
-            	if(!helpOverlayColor.overlay(pApplet.millis())) {
-            		helpOverlayColor.setOverlayEnabled(false);
-            		interactionEnabled = true;
-            	}
-            	else
-            		interactionEnabled = false;
-            			
-            	helpOverlayColor.draw();
-            }
-        	
-        	
-        	return;
-        }
-        	
-        
-        
+	}
+	
+	private void processDrawing(Point p) {
 		
-		
-		/*
-		 * process template drawing
-		 */
 		if(!template.isFinished() && interactionEnabled) {
 
 			Point start = template.getCurrentStartPoint();
 			Point stop = template.getCurrentStopPoint();
 
-			if(pointInArea(p, start, (int)(startIcon.width*startStopAreaSizeX), (int)(startIcon.height*startStopAreaSizeY))) {
-				if(!drawingMode)
-					stopPossible = false;
 
-				if(!drawingMode && startPossible) {
-					//start drawing
+			if(drawingMode && !stopPossible && !pointInArea(p, start, (int)(AppMain.frameWidth*stopPossibleAreaFactor), (int)(AppMain.frameWidth*stopPossibleAreaFactor))) {
+				stopPossible = true;
+				System.out.println("stop possible from now on!");
+			}
+			
+			
+			if(pointInArea(p, start, (int)(AppMain.frameWidth*startStopAreaFactor), (int)(AppMain.frameWidth*startStopAreaFactor))) {
+				if(!drawingMode) {
+					System.out.println("start drawing");
 					drawingMode = true;  
+					stopPossible = false;
 				}
 			}
-			else 
-				stopPossible = true;
 
-			if(pointInArea(p, stop,  (int)(stopIcon.width*startStopAreaSizeX), (int)(stopIcon.height*startStopAreaSizeY))) {
-				if(drawingMode)
-					startPossible = false;
+			if(pointInArea(p, stop,  (int)(AppMain.frameWidth*startStopAreaFactor), (int)(AppMain.frameWidth*startStopAreaFactor))) {
 				if(drawingMode && stopPossible) {
 					//end drawing
+					System.out.println("end drawing");
+					
 					curvePoints[0] = curvePoints[2];
 					curvePoints[1] = curvePoints[3];
 					curvePoints[2] = stop;
 					curvePoints[3] = stop;
-					drawCurvePoints(gPath, curvePoints);
+					drawCurvePoints(gPaths[template.getCurrentStage()], curvePoints);
 
 					curvePoints = null;
 					drawingMode = false;  
@@ -229,8 +200,7 @@ public class DrawingScreen extends Screen {
 					}
 				}
 			}
-			else 
-				startPossible = true;
+
 
 			if(drawingMode) {
 				if(curvePoints != null) {
@@ -243,30 +213,51 @@ public class DrawingScreen extends Screen {
 					curvePoints = new Point[4];
 					curvePoints[0] = curvePoints[1] = curvePoints[2] = curvePoints[3] = start;
 				}
-				drawCurvePoints(gPath, curvePoints);
+				drawCurvePoints(gPaths[template.getCurrentStage()], curvePoints);
 			}
-
 			
-			pApplet.image(template.getCurrentStageImage(), 0, 0); 
-			
-			if(!drawingMode) {
-				pApplet.image(startIcon, start.x-startIcon.width/2, start.y-startIcon.height/2);
-			} 
-			else {
-				pApplet.image(stopIcon, stop.x-stopIcon.width/2, stop.y-stopIcon.height/2);
-			}
-
-
+		}
+		
+		else if(template.isFinished()) {
+			currentMode = Modes.END;
 		}
 
-		pApplet.image(gPath, 0, 0);
+	}
+	
+	private void drawTemplate() {
+		Point start = template.getCurrentStartPoint();
+		Point stop = template.getCurrentStopPoint();
 		
+		pApplet.image(template.getCurrentStageImage(), 0, 0); 
 		
-		/*
-		 * process help overlays
-		 */
+		if(!drawingMode) {
+			pApplet.image(startIcon, start.x-startIcon.width/2, start.y-startIcon.height/2);
+		} 
+		else {
+			pApplet.image(stopIcon, stop.x-stopIcon.width/2, stop.y-stopIcon.height/2);
+		}
+	}
+	
+	private void drawPath() {
+		for (int i = 0; i <= template.getCurrentStage(); i++) {
+			pApplet.image(gPaths[i], 0, 0);
+		}
+	}
+	
+	private void processHelpOverlays(Point p) {
+		
         if(pApplet.isHelpMode()) {
-        	if(helpOverlayUndo.isEnabled()) {
+        	if(helpOverlayColor.isEnabled()) {
+               	if(!helpOverlayColor.overlay(pApplet.millis())) {
+            		helpOverlayColor.setOverlayEnabled(false);
+            		interactionEnabled = true;
+            	}
+            	else
+            		interactionEnabled = false;
+            			
+            	helpOverlayColor.draw();
+        	}
+        	else if(helpOverlayUndo.isEnabled()) {
             	if(!helpOverlayUndo.overlay(pApplet.millis())) {
             		helpOverlayUndo.setOverlayEnabled(false);
             		interactionEnabled = true;
@@ -288,7 +279,65 @@ public class DrawingScreen extends Screen {
         	}
 
         }
+        
+        
+	}
+	
+	private void processEndMenu(Point p) {
+		pApplet.image(endBg, (int)(0.025*AppMain.frameWidth), (int)(0.716*AppMain.frameHeight));
+		
+        if(redraw.isPointOnButton(p) && interactionEnabled) {
+            if(redraw.hover(pApplet.millis())) { 
+                currentMode = Modes.DRAWING;
+                undoCurrentStep();
+            	template.reset();
+            }
+        }
+        else
+        	redraw.release();
 
+        
+        if(cancel.isPointOnButton(p) && interactionEnabled) {
+            if(cancel.hover(pApplet.millis())) { 
+            	currentMode = Modes.FIRST_COLOR_CHOOSE;
+            	strokeColor = null;
+                undoCurrentStep();
+            	template.reset();
+                pApplet.setCurrentScreen(Screens.HOME);
+            }
+        }
+        else
+        	cancel.release();
+
+        
+        redraw.draw();
+        cancel.draw();
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	private void doGraffitiButtonInteraction(Point p, Button graffitiButton, Color color) {
+        if(graffitiButton.isPointOnButton(p)) {
+            if(graffitiButton.hover(pApplet.millis())) { 
+                System.out.println("graffitiButton " + color.toString() + " is clicked!!!");
+                if(strokeColor==null)
+                	helpOverlayDrawing.setOverlayEnabled(true);
+                strokeColor = color;
+                if(currentGraffitiButton!=null && currentGraffitiButton!=graffitiButton)
+                	currentGraffitiButton.release();
+                currentGraffitiButton = graffitiButton;
+            }
+        }
+        else if(currentGraffitiButton!=graffitiButton)
+        	graffitiButton.release();
 	}
 	
 	
@@ -296,7 +345,7 @@ public class DrawingScreen extends Screen {
 		g.beginDraw();
 
 		g.stroke(getStrokeColor().getRGB());
-		g.strokeWeight(5);
+		g.strokeWeight(15);
 		g.noFill();
 
 		g.beginShape();
@@ -329,7 +378,18 @@ public class DrawingScreen extends Screen {
 	}
 
 	
-	private void erasePath() {
+	private void undoCurrentStep() {
+		if(template.isFinished())
+			return;
+		
+		if(drawingMode)
+			drawingMode = false;
+		else 
+			template.previousStage();
+		
+		curvePoints = null;
+		
+		PGraphics gPath = gPaths[template.getCurrentStage()];
 		gPath.beginDraw();
 		gPath.background(0,0);
 		gPath.endDraw();
@@ -346,6 +406,12 @@ public class DrawingScreen extends Screen {
 	public void setCurrentTemplate(DrawTemplate template) {
 		this.template = template;
 		
+		this.gPaths = new PGraphics[template.getNumStages()];
+		for (int i = 0; i < gPaths.length; i++) {
+			PGraphics gPath = pApplet.createGraphics(AppMain.frameWidth, AppMain.frameHeight, PApplet.P2D);
+			gPath.background(0,0);
+			gPaths[i] = gPath;
+		}
 	}
 
 
