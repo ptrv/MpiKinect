@@ -4,7 +4,7 @@ import processing.core.PImage;
 
 public class HelpOverlay {
 
-	public static int OVERLAY_DURATION = 6000; //ms
+	public static int OVERLAY_DURATION = 9000; //ms
 	
 	PImage helpImg;
 	AppMain pApplet;

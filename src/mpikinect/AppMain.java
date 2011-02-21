@@ -17,7 +17,7 @@ import processing.core.PImage;
 
 public class AppMain extends PApplet {
 	
-	public static boolean DEBUG_MODE = true;
+	public static boolean DEBUG_MODE = false;
 	
 	/* * * * * * * * * * * * 
 	 * BEGIN CONFIGURATION
@@ -145,7 +145,10 @@ public class AppMain extends PApplet {
 		/*
 		 * STEP2: Process current screen
 		 */
-		background(0);
+		if(DEBUG_MODE)
+			background(80);
+		else
+			background(0);
 		
 		switch (currentScreen) {
 		
@@ -159,7 +162,7 @@ public class AppMain extends PApplet {
 			break;
 
 		case DRAWING:
-			image(flipImage(kinect.getVideoImage()),0,0);
+			//image(flipImage(kinect.getVideoImage()),0,0);
 			drawingScreen.draw(p);
 			break;
 			
@@ -171,6 +174,8 @@ public class AppMain extends PApplet {
 		//always draw hand cursor on top
 		image(gPointer, 0, 0); 
 
+		
+		
 		
 		if(DEBUG_MODE) {
 			fill(255);
@@ -190,7 +195,8 @@ public class AppMain extends PApplet {
 			}
 			
 			stroke(0, 255, 0);
-			ellipse(frameWidth+p.x-2, p.y-2, 5, 5);
+			Point h = handDetector.getHandPos();
+			ellipse(frameWidth+h.x-2, h.y-2, 5, 5);
 
 			
 		}
@@ -275,6 +281,12 @@ public class AppMain extends PApplet {
 	}
 
 	public static void main(String _args[]) {
-		PApplet.main(new String[] {mpikinect.AppMain.class.getName() });
+		
+		for (int i = 0; i < _args.length; i++) {
+			if(_args[i].endsWith("debug"))
+				AppMain.DEBUG_MODE = true;
+		}
+		
+		PApplet.main(new String[] {"--present", mpikinect.AppMain.class.getName() });
 	}
 }

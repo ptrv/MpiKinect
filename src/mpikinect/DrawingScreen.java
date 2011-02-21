@@ -33,7 +33,7 @@ public class DrawingScreen extends Screen {
 	
 	DrawTemplate template = null;
 	
-	float startStopAreaFactor = 0.08f; //relative to frameWidth
+	float startStopAreaFactor = 0.07f; //relative to frameWidth
 	float stopPossibleAreaFactor = 0.2f; //relative to frameWidth
 	
 	private Color strokeColor = null;
@@ -416,6 +416,8 @@ public class DrawingScreen extends Screen {
 			gPath.background(0,0);
 			gPaths[i] = gPath;
 		}
+		
+		System.out.println("Template changed: num steps " + template.getNumStages());
 	}
 
 

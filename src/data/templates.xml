@@ -38,46 +38,48 @@
 
 		<stage id="stage1">
 			<bg>templates/bomb1.png</bg>
-			<startx>419</startx> 
-			<starty>670</starty> 
-			<endx>419</endx>
-			<endy>670</endy>
+			<startx>581</startx> 
+			<starty>182</starty> 
+			<endx>581</endx>
+			<endy>182</endy>
 		</stage>
 
 		<stage id="stage2">
 			<bg>templates/bomb2.png</bg>
-			<startx>370</startx> 
-			<starty>330</starty> 
-			<endx>370</endx>
-			<endy>330</endy>
+			<startx>508</startx> 
+			<starty>247</starty> 
+			<endx>508</endx>
+			<endy>247</endy>
 		</stage>
 
 		<stage id="stage3">
 			<bg>templates/bomb3.png</bg>
-			<startx>521</startx> 
-			<starty>198</starty> 
-			<endx>535</endx>
-			<endy>199</endy>
+			<startx>579</startx> 
+			<starty>178</starty> 
+			<endx>587</endx>
+			<endy>181</endy>
 		</stage>
 
 		<stage id="stage4">
 			<bg>templates/bomb4.png</bg>
-			<startx>602</startx> 
-			<starty>129</starty> 
-			<endx>598</endx>
-			<endy>160</endy>
+			<startx>646</startx> 
+			<starty>106</starty> 
+			<endx>646</endx>
+			<endy>148</endy>
 		</stage>
 
 		<stage id="stage5">
 			<bg>templates/bomb5.png</bg>
-			<startx>646</startx> 
-			<starty>150</starty> 
-			<endx>686</endx>
-			<endy>184</endy>
+			<startx>685</startx> 
+			<starty>129</starty> 
+			<endx>718</endx>
+			<endy>161</endy>
 		</stage>
 
 
 	</template>
+    
+    
 	<template name="cassette">
 
 		<thumbnail_empty>templates/cassette_low.png</thumbnail_empty>
@@ -127,34 +129,34 @@
 
 		<stage id="stage1">
 			<bg>templates/cloud1.png</bg>
-			<startx>516</startx> 
-			<starty>486</starty> 
-			<endx>516</endx>
-			<endy>486</endy>
+			<startx>289</startx> 
+			<starty>247</starty> 
+			<endx>289</endx>
+			<endy>247</endy>
 		</stage>
 
 		<stage id="stage2">
 			<bg>templates/cloud2.png</bg>
-			<startx>318</startx> 
-			<starty>488</starty> 
-			<endx>366</endx>
-			<endy>492</endy>
+			<startx>347</startx> 
+			<starty>376</starty> 
+			<endx>392</endx>
+			<endy>376</endy>
 		</stage>
 
 		<stage id="stage3">
 			<bg>templates/cloud3.png</bg>
-			<startx>668</startx> 
-			<starty>464</starty> 
-			<endx>684</endx>
-			<endy>456</endy>
+			<startx>685</startx> 
+			<starty>350</starty> 
+			<endx>699</endx>
+			<endy>345</endy>
 		</stage>
 
 		<stage id="stage4">
 			<bg>templates/cloud4.png</bg>
-			<startx>546</startx> 
-			<starty>477</starty> 
-			<endx>504</endx>
-			<endy>490</endy>
+			<startx>524</startx> 
+			<starty>373</starty> 
+			<endx>552</endx>
+			<endy>374</endy>
 		</stage>
 
 	</template>
@@ -168,27 +170,55 @@
 
 		<stage id="stage1">
 			<bg>templates/fist1.png</bg>
-			<startx>610</startx> 
-			<starty>512</starty> 
-			<endx>610</endx>
-			<endy>512</endy>
+			<startx>691</startx> 
+			<starty>425</starty> 
+			<endx>691</endx>
+			<endy>425</endy>
 		</stage>
 
 		<stage id="stage2">
 			<bg>templates/fist2.png</bg>
-			<startx>328</startx> 
-			<starty>362</starty> 
-			<endx>478</endx>
+			<startx>484</startx> 
+			<starty>449</starty> 
+			<endx>338</endx>
 			<endy>448</endy>
 		</stage>
 
 		<stage id="stage3">
 			<bg>templates/fist3.png</bg>
-			<startx>540</startx> 
-			<starty>574</starty> 
-			<endx>540</endx>
-			<endy>574</endy>
+			<startx>167</startx> 
+			<starty>291</starty> 
+			<endx>167</endx>
+			<endy>291</endy>
 		</stage>
 
 	</template>
+    
+    
+    <!--
+    <template name="flower">
+
+		<thumbnail_empty>templates/flower_low.png</thumbnail_empty>
+		<thumbnail_full>templates/flower_high.png</thumbnail_full>
+		<thumb_top_x>553</thumb_top_x>
+		<thumb_top_y>234</thumb_top_y>
+
+		<stage id="stage1">
+			<bg>templates/flower1.png</bg>
+			<startx>525</startx> 
+			<starty>433</starty> 
+			<endx>586</endx>
+			<endy>411</endy>
+		</stage>
+
+		<stage id="stage2">
+			<bg>templates/flower2.png</bg>
+			<startx>531</startx> 
+			<starty>169</starty> 
+			<endx>531</endx>
+			<endy>169</endy>
+		</stage>
+	</template>
+    -->
+    
 </resources>

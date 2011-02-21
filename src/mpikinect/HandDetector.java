@@ -18,6 +18,7 @@ public class HandDetector {
 	
 	
 	
+	
 	private int imgWidth, imgHeight;
 	private OpenCV opencv;
 	private int[] rawDepth;
@@ -176,7 +177,9 @@ public class HandDetector {
 	public Blob[] getBlobs() {
 		return blobs;
 	}
-	
+	public Point getHandPos() {
+		return oldHandPos;
+	}
 	
 	
 	public static void increaseThreshold() {
