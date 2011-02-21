@@ -107,8 +107,9 @@ public class DrawingScreen extends Screen {
 				processGraffitiButtons(p);
 				processUndoButton(p);
 				processDrawing(p);
-				drawTemplate();
 				drawPath();
+				drawTemplate();
+				drawTemplateStartEnd();
 				break;
 				
 			case END:
@@ -226,11 +227,11 @@ public class DrawingScreen extends Screen {
 	}
 	
 	private void drawTemplate() {
+		pApplet.image(template.getCurrentStageImage(), 0, 0); 
+	}
+	private void drawTemplateStartEnd() {
 		Point start = template.getCurrentStartPoint();
 		Point stop = template.getCurrentStopPoint();
-		
-		pApplet.image(template.getCurrentStageImage(), 0, 0); 
-		
 		if(!drawingMode) {
 			pApplet.image(startIcon, start.x-startIcon.width/2, start.y-startIcon.height/2);
 		} 
