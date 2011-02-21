@@ -10,38 +10,46 @@ import processing.xml.XMLElement;
 
 public class TemplateChooserScreen extends Screen {
 
-	static final int NUM_TEMPLATES = 1;
+//	static final int NUM_TEMPLATES = 3;
 	
 	DrawTemplate[] templates;
 	
 	private int currentTemplateIndex;
-	private Button buttonPrev, buttonPick, buttonNext;
 	private HelpOverlay helpOverlay;
 	private boolean interactionEnabled = true;
+	
+	private Button buttons[];
 	
 	public TemplateChooserScreen(AppMain p) {
 		super(p);
 		this.background = pApplet.loadImage("screen2_bg_1024.png");
 		this.background.resize(AppMain.frameWidth, AppMain.frameHeight);
 		
-		PImage imgButton1e = pApplet.loadImage("buttons/button_2_1_empty.png");
-		PImage imgButton1f = pApplet.loadImage("buttons/button_2_1_full.png");
-		PImage imgButton2e = pApplet.loadImage("buttons/button_2_2_empty.png");
-		PImage imgButton2f = pApplet.loadImage("buttons/button_2_2_full.png");
-		PImage imgButton3e = pApplet.loadImage("buttons/button_2_3_empty.png");
-		PImage imgButton3f = pApplet.loadImage("buttons/button_2_3_full.png");
-		AppMain.adjustImageSize(imgButton1e, imgButton1f, imgButton2e, imgButton2f, imgButton3e, imgButton3f);
-		
-		this.buttonPrev = new Button(imgButton1e, imgButton1f, (int)(0.07*AppMain.frameWidth), (int)(0.67*AppMain.frameHeight), Button.LOADING_RIGHT_TO_LEFT, p);
-		this.buttonPick = new Button(imgButton2e, imgButton2f, (int)(0.38*AppMain.frameWidth), (int)(0.67*AppMain.frameHeight), Button.LOADING_LEFT_TO_RIGHT, p);
-		this.buttonNext = new Button(imgButton3e, imgButton3f, (int)(0.75*AppMain.frameWidth), (int)(0.67*AppMain.frameHeight), Button.LOADING_LEFT_TO_RIGHT, p);
+		initTemplates();
+		initButtons(p);
 
 		currentTemplateIndex = 0;
 		
 		PImage helpImg = pApplet.loadImage("help_screen1_1024.png");
 		helpOverlay = new HelpOverlay(helpImg, p);
 		
-		initTemplates();
+	}
+
+	private void initButtons(AppMain p) {
+		buttons = new Button[templates.length];
+		for (int i = 0; i < templates.length; i++) {
+			PImage imgButton1e = pApplet.loadImage(templates[i].getThumbnailEmpty());
+			PImage imgButton1f = pApplet.loadImage(templates[i].getThumbnailFull());
+			AppMain.adjustImageSize(imgButton1e, imgButton1f);
+			
+			// TODO Better solution for deviding coordinates through image width and height.
+			buttons[i] = new Button(imgButton1e, imgButton1f, 
+					(int)templates[i].getThumbnailTopX()*AppMain.frameWidth/1024, 
+					(int)templates[i].getThumbnailTopY()*AppMain.frameHeight/768, 
+					Button.LOADING_BOTTOM_TO_TOP, p);
+
+		}
+		
 	}
 
 	private void initTemplates() {
@@ -50,7 +58,7 @@ public class TemplateChooserScreen extends Screen {
 		templates = new DrawTemplate[numTemplates];
 		for (int i = 0; i < numTemplates; i++) {
 			XMLElement template = xml.getChild(i);
-			templates[i] = new DrawTemplate(pApplet, template);			
+			templates[i] = new DrawTemplate(pApplet, template, i);			
 		}
 		
 	}
@@ -59,47 +67,23 @@ public class TemplateChooserScreen extends Screen {
 	void draw(Point p) {
 		pApplet.image(background, 0,0);
 		
-        if(buttonPrev.isPointOnButton(p) && interactionEnabled) {
-            if(buttonPrev.hover(pApplet.millis())) { //ok, button is hovered, update overlay animation
-                System.out.println("buttonPrev is clicked!!!");
-                currentTemplateIndex--;
-                buttonPrev.release();
-            }
-        }
-        else
-        	buttonPrev.release();
+		for (int i = 0; i < buttons.length; i++) {
+			if(buttons[i].isPointOnButton(p) && interactionEnabled) {
+	            if(buttons[i].hover(pApplet.millis())) { //ok, button is hovered, update overlay animation
+	                System.out.println("button "+i+" is clicked!!!");
+	                currentTemplateIndex = i;
+	                pApplet.setCurrentTemplate(templates[i]);
+	                pApplet.setCurrentScreen(Screens.DRAWING);
+	                buttons[i].release();
+	            }
+	        }
+	        else
+	        	buttons[i].release();
 
-        buttonPrev.draw();
-
-        if(buttonNext.isPointOnButton(p) && interactionEnabled) {
-            if(buttonNext.hover(pApplet.millis())) { //ok, button is hovered, update overlay animation
-                System.out.println("buttonNext is clicked!!!");
-                currentTemplateIndex++;
-                buttonNext.release();
-            }
-        }
-        else
-        	buttonNext.release();
-
-        buttonNext.draw();
-
-        if(buttonPick.isPointOnButton(p) && interactionEnabled) {
-            if(buttonPick.hover(pApplet.millis())) { //ok, button is hovered, update overlay animation
-                System.out.println("buttonPick is clicked!!!");
-                pApplet.setCurrentTemplate(templates[currentTemplateIndex]);
-                pApplet.setCurrentScreen(Screens.DRAWING);
-                buttonPick.release();
-            }
-        }
-        else
-        	buttonPick.release();
-
-        buttonPick.draw();
-        
-        showTemplateThumbnail(currentTemplateIndex);
-        
-        
-        
+			buttons[i].draw();
+		}
+		        
+//        showTemplateThumbnail(currentTemplateIndex);
         
         if(pApplet.isHelpMode()) {
         	if(!helpOverlay.overlay(pApplet.millis())) {
@@ -114,12 +98,12 @@ public class TemplateChooserScreen extends Screen {
 
 	}
 
-	private void showTemplateThumbnail(int index) {
-		if(index > NUM_TEMPLATES)
-            currentTemplateIndex = NUM_TEMPLATES-1;
-        else if(index < 0)
-            currentTemplateIndex = 0;
-	}
+//	private void showTemplateThumbnail(int index) {
+//		if(index > templates.length)
+//            currentTemplateIndex = templates.length-1;
+//        else if(index < 0)
+//            currentTemplateIndex = 0;
+//	}
 
 	public void setCurrentTemplateIndex(int currentTemplateIndex) {
 		this.currentTemplateIndex = currentTemplateIndex;

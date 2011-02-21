@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <resources>
-	<template name="heart">
+	<!-- <template name="heart">
 	
 		<thumbnail_full>whatever.png</thumbnail_full>
 	 	<thumbnail_empty>whatever.png</thumbnail_empty>
@@ -27,5 +27,119 @@
 			<endx>0.7</endx>
 			<endy>0.221</endy>
 	   </stage>
+	</template> -->
+	
+	<template name="cassette">
+
+		<thumbnail_empty>templates/cassette_low.png</thumbnail_empty>
+		<thumbnail_full>templates/cassette_high.png</thumbnail_full>
+		<thumb_top_x>553</thumb_top_x>
+		<thumb_top_y>234</thumb_top_y>
+
+		<stage id="stage1">
+			<bg>templates/c-cassette1.png</bg>
+			<startx>534</startx> 
+			<starty>562</starty> 
+			<endx>534</endx>
+			<endy>562</endy>
+		</stage>
+
+		<stage id="stage2">
+			<bg>templates/c-cassette2.png</bg>
+			<startx>544</startx> 
+			<starty>486</starty> 
+			<endx>544</endx>
+			<endy>486</endy>
+		</stage>
+
+		<stage id="stage3">
+			<bg>templates/c-cassette3.png</bg>
+			<startx>564</startx> 
+			<starty>400</starty> 
+			<endx>564</endx>
+			<endy>400</endy>
+		</stage>
+
+		<stage id="stage4">
+			<bg>templates/c-cassette4.png</bg>
+			<startx>474</startx> 
+			<starty>342</starty> 
+			<endx>622</endx>
+			<endy>342</endy>
+		</stage>
+	</template>
+	
+	<template name="cloud">
+
+		<thumbnail_empty>templates/cloud_low.png</thumbnail_empty>
+		<thumbnail_full>templates/cloud_high.png</thumbnail_full>
+		<thumb_top_x>172</thumb_top_x>
+		<thumb_top_y>469</thumb_top_y>
+
+		<stage id="stage1">
+			<bg>templates/cloud1.png</bg>
+			<startx>516</startx> 
+			<starty>486</starty> 
+			<endx>516</endx>
+			<endy>486</endy>
+		</stage>
+
+		<stage id="stage2">
+			<bg>templates/cloud2.png</bg>
+			<startx>318</startx> 
+			<starty>488</starty> 
+			<endx>366</endx>
+			<endy>492</endy>
+		</stage>
+
+		<stage id="stage3">
+			<bg>templates/cloud3.png</bg>
+			<startx>668</startx> 
+			<starty>464</starty> 
+			<endx>684</endx>
+			<endy>456</endy>
+		</stage>
+
+		<stage id="stage4">
+			<bg>templates/cloud4.png</bg>
+			<startx>546</startx> 
+			<starty>477</starty> 
+			<endx>504</endx>
+			<endy>490</endy>
+		</stage>
+
+	</template>
+	
+	<template name="fist">
+
+		<thumbnail_empty>templates/fist_low.png</thumbnail_empty>
+		<thumbnail_full>templates/fist_high.png</thumbnail_full>
+		<thumb_top_x>541</thumb_top_x>
+		<thumb_top_y>498</thumb_top_y>
+
+		<stage id="stage1">
+			<bg>templates/fist1.png</bg>
+			<startx>610</startx> 
+			<starty>512</starty> 
+			<endx>610</endx>
+			<endy>512</endy>
+		</stage>
+
+		<stage id="stage2">
+			<bg>templates/fist2.png</bg>
+			<startx>328</startx> 
+			<starty>362</starty> 
+			<endx>478</endx>
+			<endy>448</endy>
+		</stage>
+
+		<stage id="stage3">
+			<bg>templates/fist3.png</bg>
+			<startx>540</startx> 
+			<starty>574</starty> 
+			<endx>540</endx>
+			<endy>574</endy>
+		</stage>
+
 	</template>
 </resources>
