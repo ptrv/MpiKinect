@@ -44,8 +44,8 @@ public class TemplateChooserScreen extends Screen {
 			
 			// TODO Better solution for deviding coordinates through image width and height.
 			buttons[i] = new Button(imgButton1e, imgButton1f, 
-					(int)templates[i].getThumbnailTopX()*AppMain.frameWidth/1024, 
-					(int)templates[i].getThumbnailTopY()*AppMain.frameHeight/768, 
+					(int)templates[i].getThumbnailTopX()*AppMain.frameWidth/AppMain.originalWidth, 
+					(int)templates[i].getThumbnailTopY()*AppMain.frameHeight/AppMain.originalHeight, 
 					Button.LOADING_BOTTOM_TO_TOP, p);
 
 		}

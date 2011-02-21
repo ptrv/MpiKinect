@@ -22,9 +22,6 @@ public class DrawTemplate {
 	private float thumbnailTopY;
 	private boolean templatedIsFinished = false;
 	
-	private float IMAGE_RES_X = 1024.0f;
-	private float IMAGE_RES_Y = 768.0f;
-	
 
 	public DrawTemplate(PApplet p){
 		this.pApplet = p;
@@ -57,12 +54,14 @@ public class DrawTemplate {
 			float startX = Float.parseFloat(stages[i].getChild("startx").getContent());
 			float startY = Float.parseFloat(stages[i].getChild("starty").getContent());
 			
-			startPoints[i] = new Point((int)((startX/IMAGE_RES_X)*AppMain.frameWidth),(int)((startY/IMAGE_RES_Y)*AppMain.frameHeight));
+			startPoints[i] = new Point((int)(startX*AppMain.frameWidth/AppMain.originalWidth),
+					(int)(startY*AppMain.frameHeight/AppMain.originalHeight));
 			
 			float endX = Float.parseFloat(stages[i].getChild("endx").getContent());
 			float endY = Float.parseFloat(stages[i].getChild("endy").getContent());
 			
-			stopPoints[i] = new Point((int)((endX/IMAGE_RES_X)*AppMain.frameWidth),(int)((endY/IMAGE_RES_Y)*AppMain.frameHeight));
+			stopPoints[i] = new Point((int)(endX*AppMain.frameWidth/AppMain.originalWidth),
+					(int)(endY*AppMain.frameHeight/AppMain.originalHeight));
 		}
 		AppMain.adjustImageSize(stageImages);
 
