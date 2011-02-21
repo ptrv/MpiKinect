@@ -48,7 +48,7 @@ public class DrawingScreen extends Screen {
 		this.background = pApplet.loadImage("screen3_bg_1024.png");
 		this.background.resize(AppMain.frameWidth, AppMain.frameHeight);
 		
-		this.endBg = pApplet.loadImage("screen3_end_bg_1024.png");
+		this.endBg = pApplet.loadImage("screen4_bg_1024.png");
 		
 		PImage imgButton1e = pApplet.loadImage("buttons/button_3_1_empty.png");
 		PImage imgButton1f = pApplet.loadImage("buttons/button_3_1_full.png");
@@ -60,10 +60,10 @@ public class DrawingScreen extends Screen {
 		PImage imgButton4f = pApplet.loadImage("buttons/button_3_4_full.png");
 		PImage imgButton5e = pApplet.loadImage("buttons/button_3_5_empty.png");
 		PImage imgButton5f = pApplet.loadImage("buttons/button_3_5_full.png");
-		PImage imgButton6e = pApplet.loadImage("buttons/button_3_6_empty.png");
-		PImage imgButton6f = pApplet.loadImage("buttons/button_3_6_full.png");
-		PImage imgButton7e = pApplet.loadImage("buttons/button_3_7_empty.png");
-		PImage imgButton7f = pApplet.loadImage("buttons/button_3_7_full.png");
+		PImage imgButton6e = pApplet.loadImage("buttons/button_4_1_empty.png");
+		PImage imgButton6f = pApplet.loadImage("buttons/button_4_1_full.png");
+		PImage imgButton7e = pApplet.loadImage("buttons/button_4_2_empty.png");
+		PImage imgButton7f = pApplet.loadImage("buttons/button_4_2_full.png");
 		AppMain.adjustImageSize(imgButton1e, imgButton1f, imgButton2e, imgButton2f, imgButton3e, imgButton3f, imgButton4e, imgButton4f, imgButton5e, imgButton5f, imgButton6e, imgButton6f, imgButton7e, imgButton7f, endBg);
 		
 		this.graffitiRed = 		new Button(imgButton1e, imgButton1f, (int)(0.05*AppMain.frameWidth), (int)(0.77*AppMain.frameHeight), Button.LOADING_BOTTOM_TO_TOP, p);
@@ -72,8 +72,8 @@ public class DrawingScreen extends Screen {
 		this.graffitiBlue = 	new Button(imgButton4e, imgButton4f, (int)(0.50*AppMain.frameWidth), (int)(0.77*AppMain.frameHeight), Button.LOADING_BOTTOM_TO_TOP, p);
 		this.undo = 			new Button(imgButton5e, imgButton5f, (int)(0.80*AppMain.frameWidth), (int)(0.77*AppMain.frameHeight), Button.LOADING_RIGHT_TO_LEFT, p);
 		
-		this.cancel = 			new Button(imgButton6e, imgButton6f, (int)(0.088*AppMain.frameWidth), (int)(0.833*AppMain.frameHeight), Button.LOADING_LEFT_TO_RIGHT, p);
-		this.redraw = 			new Button(imgButton7e, imgButton7f, (int)(0.361*AppMain.frameWidth), (int)(0.833*AppMain.frameHeight), Button.LOADING_LEFT_TO_RIGHT, p);
+		this.cancel = 			new Button(imgButton6e, imgButton6f, (int)(0.071*AppMain.frameWidth), (int)(0.829*AppMain.frameHeight), Button.LOADING_LEFT_TO_RIGHT, p);
+		this.redraw = 			new Button(imgButton7e, imgButton7f, (int)(0.335*AppMain.frameWidth), (int)(0.829*AppMain.frameHeight), Button.LOADING_LEFT_TO_RIGHT, p);
 
 		
 
@@ -219,6 +219,7 @@ public class DrawingScreen extends Screen {
 		}
 		
 		else if(template.isFinished()) {
+			System.out.println("Drawing finished. Proceed to end mode!");
 			currentMode = Modes.END;
 		}
 
@@ -284,13 +285,15 @@ public class DrawingScreen extends Screen {
 	}
 	
 	private void processEndMenu(Point p) {
-		pApplet.image(endBg, (int)(0.025*AppMain.frameWidth), (int)(0.716*AppMain.frameHeight));
+		
+		//pApplet.image(endBg, (int)(0.025*AppMain.frameWidth), (int)(0.716*AppMain.frameHeight));
+		pApplet.image(endBg, 0,0);
 		
         if(redraw.isPointOnButton(p) && interactionEnabled) {
             if(redraw.hover(pApplet.millis())) { 
                 currentMode = Modes.DRAWING;
-                undoCurrentStep();
             	template.reset();
+            	setCurrentTemplate(template);
             }
         }
         else
@@ -301,7 +304,7 @@ public class DrawingScreen extends Screen {
             if(cancel.hover(pApplet.millis())) { 
             	currentMode = Modes.FIRST_COLOR_CHOOSE;
             	strokeColor = null;
-                undoCurrentStep();
+            	currentGraffitiButton.release();
             	template.reset();
                 pApplet.setCurrentScreen(Screens.HOME);
             }

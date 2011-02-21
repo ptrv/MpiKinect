@@ -20,6 +20,7 @@ public class DrawTemplate {
 	private String thumbnailEmpty;
 	private float thumbnailTopX;
 	private float thumbnailTopY;
+	private boolean templatedIsFinished = false;
 	
 	private float IMAGE_RES_X = 1024.0f;
 	private float IMAGE_RES_Y = 768.0f;
@@ -73,6 +74,7 @@ public class DrawTemplate {
 		stage++;
 		if(stage >= numStages) {
 			stage = numStages-1;
+			templatedIsFinished = true;
 			return false;
 		}
 		return true;
@@ -103,10 +105,11 @@ public class DrawTemplate {
 	}
 	
 	public void reset() {
+		templatedIsFinished = false;
 		stage = 0;
 	}
 	public boolean isFinished() {
-		return stage >= numStages;
+		return templatedIsFinished;
 	}
 	public void setThumbnailFull(String thumbnailFull) {
 		this.thumbnailFull = thumbnailFull;

@@ -24,8 +24,8 @@ public class AppMain extends PApplet {
 	 * * * * * * * * * * * */
 	
 	//dimension of application
-	public static int frameWidth = 640;
-	public static int frameHeight = 480;
+	public static int frameWidth = 1024;
+	public static int frameHeight = 768;
 	
 	//dimension for which images/icons etc. are designed
 	public static int originalWidth = 1024;

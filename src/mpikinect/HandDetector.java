@@ -12,7 +12,7 @@ public class HandDetector {
 	private static int 	rawDepthRangeMin = 400;
 	private static int 	rawDepthRangeMax = 1000;
 	private static int 	findNearestDistanceOffset = 4;
-	private static float 	depthThreshold = 0.07f;
+	private static float 	depthThreshold = 0.06f;
 	
 	private static int maxHandMovement = 50; //in absolute px
 	
