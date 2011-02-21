@@ -29,6 +29,55 @@
 	   </stage>
 	</template> -->
 	
+	<template name="bomb">
+
+		<thumbnail_empty>templates/bomb_low.png</thumbnail_empty>
+		<thumbnail_full>templates/bomb_high.png</thumbnail_full>
+		<thumb_top_x>214</thumb_top_x>
+		<thumb_top_y>189</thumb_top_y>
+
+		<stage id="stage1">
+			<bg>templates/bomb1.png</bg>
+			<startx>419</startx> 
+			<starty>670</starty> 
+			<endx>419</endx>
+			<endy>670</endy>
+		</stage>
+
+		<stage id="stage2">
+			<bg>templates/bomb2.png</bg>
+			<startx>370</startx> 
+			<starty>330</starty> 
+			<endx>370</endx>
+			<endy>330</endy>
+		</stage>
+
+		<stage id="stage3">
+			<bg>templates/bomb3.png</bg>
+			<startx>521</startx> 
+			<starty>198</starty> 
+			<endx>535</endx>
+			<endy>199</endy>
+		</stage>
+
+		<stage id="stage4">
+			<bg>templates/bomb4.png</bg>
+			<startx>602</startx> 
+			<starty>129</starty> 
+			<endx>598</endx>
+			<endy>160</endy>
+		</stage>
+
+		<stage id="stage5">
+			<bg>templates/bomb5.png</bg>
+			<startx>646</startx> 
+			<starty>150</starty> 
+			<endx>686</endx>
+			<endy>184</endy>
+		</stage>
+
+
+	</template>
 	<template name="cassette">
 
 		<thumbnail_empty>templates/cassette_low.png</thumbnail_empty>
